@@ -24,7 +24,7 @@ export class ParamFilter<E = Object> {
 
     resultsPerPage = 10;
 
-    constructor(protected requestUrl: string, protected http: HttpClient) {
+    constructor(protected _requestUrl: string, protected http: HttpClient) {
     }
 
     public refresh(): void {
@@ -37,7 +37,7 @@ export class ParamFilter<E = Object> {
     }
 
     public refreshPromise(): Observable<any> {
-        return this.http.get<Array<E>>(this.requestUrl, {params: this.build()})
+        return this.http.get<Array<E>>(this._requestUrl, {params: this.build()});
             // .catch((err: Response) => this.api.handleError(err));
     }
 
@@ -133,5 +133,13 @@ export class ParamFilter<E = Object> {
 
     getResultsPerPage(): number {
         return this.resultsPerPage;
+    }
+
+    get requestUrl(): string {
+        return this._requestUrl;
+    }
+
+    set requestUrl(value: string) {
+        this._requestUrl = value;
     }
 }
