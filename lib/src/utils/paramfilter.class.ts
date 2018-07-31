@@ -30,7 +30,7 @@ export class ParamFilter {
     resultsPerPage = 10;
     grouped = false;
 
-    constructor(private requestUrl: string, private api: HttpClient, withScope?: boolean) {
+    constructor(private _requestUrl: string, private api: HttpClient, withScope?: boolean) {
         if (withScope !== undefined) {
             this.withScope = withScope;
         }
@@ -161,5 +161,13 @@ export class ParamFilter {
 
     getResultsPerPage(): number {
         return this.resultsPerPage;
+    }
+
+    get requestUrl(): string {
+        return this._requestUrl;
+    }
+
+    set requestUrl(value: string) {
+        this._requestUrl = value;
     }
 }
