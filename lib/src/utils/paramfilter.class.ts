@@ -86,8 +86,8 @@ export class ParamFilter<E = Object> {
         this.orderings = orderings;
     }
 
-    public build(): HttpParams {
-        const searchParams: HttpParams = new HttpParams();
+    public build(): any {
+        let searchParams: {filter: string, order: string, page: string, resultsPerPage: string};
         const filterObjects: Array<object> = [];
         if (this.filters) {
             if (this.filters.length === 1) {
@@ -111,18 +111,12 @@ export class ParamFilter<E = Object> {
         }
 
         const filterObjectsString = JSON.stringify(filterObjects);
-
-        // @Felix todo - Wieso passiert das hier?
-        // if (this.filtersFromLastRequest && this.filtersFromLastRequest !== filterObjectsString) {
-        //     this.page = 1;
-        // }
-        this.filtersFromLastRequest = JSON.stringify(filterObjects);
-
-        searchParams.set('filter', filterObjectsString);
-        searchParams.set('order', JSON.stringify(orderings));
-        searchParams.set('page', this.page.toString());
-        searchParams.set('resultsPerPage', this.resultsPerPage.toString());
-
+        searchParams = {
+            filter: filterObjectsString,
+            order: JSON.stringify(orderings),
+            page: this.page.toString(),
+            resultsPerPage: this.resultsPerPage.toString()
+        };
         return searchParams;
     }
 

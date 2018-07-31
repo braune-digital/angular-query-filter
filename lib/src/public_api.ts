@@ -3,6 +3,7 @@
 // Directives
 
 // Filter
-export { ParamFilter } from './paramfilter.class';
+export { ParamFilter } from './utils/paramfilter.class';
 
 // Module
+export * from './filter.module';

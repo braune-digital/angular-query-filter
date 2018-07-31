@@ -1,0 +1,14 @@
+<ng-select
+  bdSelect
+  placeholder="{{ 'forms.fields.order' | translate }}"
+  (change)="refreshOrdering($event)"
+  [formControl]="form.get('ordering')"
+  [items]="orderKeys"
+  bindValue="key"
+  bindLabel="label"
+></ng-select>
+
+
+<i class="bd-icon bd-icon--big icon-arrow-down" *ngIf="getActiveSort() === 'desc'" (click)="refreshOrdering(true)"></i>
+<i class="bd-icon bd-icon--big icon-arrow-up" *ngIf="getActiveSort() !== 'desc'" (click)="refreshOrdering(true)"></i>
+

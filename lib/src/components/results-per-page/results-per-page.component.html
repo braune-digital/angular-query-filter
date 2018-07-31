@@ -1,0 +1,7 @@
+<ng-select
+   bdSelect
+   placeholder="{{ 'forms.fields.results_per_page' | translate }}"
+   (change)="refreshResultsPerPage()"
+   [formControl]="form.get('pagination')"
+   [items]="resultKeys"
+></ng-select>

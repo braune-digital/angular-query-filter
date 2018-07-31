@@ -1,7 +1,7 @@
 {
   "$schema": "../node_modules/ng-packagr/package.schema.json",
   "name": "@braune-digital/angular-query-filter",
-  "version": "1.0.0-alpha.2",
+  "version": "1.0.0-alpha.5",
   "description": "Components to use with the query-filter-bundle.",
   "author": "Jannik <jc@braune-digital.com>",
   "license": "GNU",
@@ -9,7 +9,10 @@
   "peerDependencies": {
     "@angular/core": "^5.2.0",
     "@angular/common": "^5.2.0",
-    "@angular/forms": "^5.2.0"
+    "@angular/forms": "^5.2.0",
+    "ngx-bootstrap": "^2.0.5",
+    "@braune-digital/form-utilities": "^1.0.0-rc.3",
+    "rxjs": "^5.5.11"
   },
   "ngPackage": {
     "lib": {
