@@ -1,0 +1,34 @@
+<ng-container *ngIf="type === 'text'">
+    <div [ngClass]="{'filterbar--resetable': resetable && model}">
+        <input name="search"
+               [(ngModel)]="model"
+               (keyup)="onKeyPress()"
+               [placeholder]="filterPlaceholder"
+               class="form-control form-control--small" />
+        <a class="filterbar--resetbtn" (click)="resetSearch()" *ngIf="resetable && model">
+            <i class="bd-icon icon-cross"></i>
+        </a>
+    </div>
+</ng-container>
+
+<ng-select *ngIf="type === 'select'"
+           bdSelect
+           [placeholder]="filterPlaceholder"
+           (change)="onChange($event)"
+           (remove)="onRemove($event)"
+           [items]="_options"
+           bindValue="value"
+           bindLabel="label"
+></ng-select>
+
+<!--<select-component *ngIf="type === 'select' || type === 'instanceof'"-->
+                  <!--controlClass="form-control&#45;&#45;small"-->
+                  <!--[selectPlaceholder]="filterPlaceholder"-->
+                  <!--(onSelect)="onChange($event)"-->
+                  <!--(onRemove)="onRemove($event)"-->
+                  <!--[selectClass]="selectClass"-->
+                  <!--[resetable]="resetable"-->
+                  <!--[options]="options"-->
+                  <!--optionValue="value"-->
+                  <!--optionLabel="label">-->
+<!--</select-component>-->

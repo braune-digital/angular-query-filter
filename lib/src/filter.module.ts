@@ -9,6 +9,7 @@ import {TranslateModule} from '@ngx-translate/core';
 import {PaginationModule} from 'ngx-bootstrap';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {FormUtilitiesModule} from '@braune-digital/form-utilities';
+import {FilterComponent} from './components/filter/filter.component';
 
 @NgModule({
     imports: [
@@ -25,12 +26,14 @@ import {FormUtilitiesModule} from '@braune-digital/form-utilities';
     declarations: [
         ResultsPerPageComponent,
         PaginationFilterComponent,
-        OrderingComponent
+        OrderingComponent,
+        FilterComponent
     ],
     exports: [
         ResultsPerPageComponent,
         PaginationFilterComponent,
-        OrderingComponent
+        OrderingComponent,
+        FilterComponent
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
