@@ -1,6 +1,8 @@
 import { Filter } from '../filter';
-import * as moment from 'moment';
+import * as moment_ from 'moment';
 import { Moment } from 'moment';
+
+const moment = moment_;
 
 export class DateTimeRangeFilter extends Filter {
     public type = 'date_time_range';
