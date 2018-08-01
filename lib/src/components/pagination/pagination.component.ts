@@ -6,10 +6,12 @@ import { ParamFilter } from '../../utils/paramfilter.class';
     moduleId: module.id,
     selector: 'paginationFilter',
     templateUrl: 'pagination.component.html',
+    styleUrls: ['./pagination.component.scss']
 })
 export class PaginationFilterComponent implements OnInit {
 
     @Input('filterService') filterService: ParamFilter;
+    @Input('showOnLoading') showOnLoading: boolean = false;
 
     isLoading = true;
 

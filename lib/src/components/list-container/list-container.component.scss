@@ -1,0 +1,33 @@
+$list-container-init-loading-height: 200px !default;
+
+:host {
+  position: relative;
+  display: block;
+  ::ng-deep {
+    list-loading {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      display: block;
+      left: 0;
+      top: 0;
+      background-color: rgba(255,255,255, 0.7);
+      z-index: 90;
+      .loader {
+        line-height: 6px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+    }
+  }
+  .init-state {
+    ::ng-deep {
+      list-loading {
+        height: $list-container-init-loading-height;
+        position: relative;
+      }
+    }
+  }
+}

@@ -1,0 +1,12 @@
+<div [ngClass]="{'init-state': !firstLoaded}">
+    <ng-container *ngIf="(filter.isLoadingEvent | async) === true">
+        <list-loading></list-loading>
+    </ng-container>
+    <ng-container *ngIf="(filter.responseEvent | async)?.length">
+        <ng-content select="[list]"></ng-content>
+        <paginationFilter [showOnLoading]="true" [filterService]="filter"></paginationFilter>
+    </ng-container>
+    <ng-container *ngIf="!(filter.responseEvent | async)?.length && firstLoaded">
+        <ng-content select="[noResults]"></ng-content>
+    </ng-container>
+</div>

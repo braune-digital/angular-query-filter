@@ -6,6 +6,7 @@ import { ParamFilter } from '../../utils/paramfilter.class';
     moduleId: module.id,
     selector: 'results-per-page',
     templateUrl: 'results-per-page.component.html',
+    styleUrls: ['./results-per-page.component.scss']
 })
 export class ResultsPerPageComponent implements OnInit {
 

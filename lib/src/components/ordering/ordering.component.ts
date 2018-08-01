@@ -6,7 +6,7 @@ import {TranslateService} from '@ngx-translate/core';
 
 @Component({
     moduleId: module.id,
-    selector: 'ares-ordering',
+    selector: 'ordering',
     templateUrl: 'ordering.component.html',
 })
 export class OrderingComponent implements OnInit, AfterViewInit {

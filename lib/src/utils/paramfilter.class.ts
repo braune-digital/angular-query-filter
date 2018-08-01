@@ -11,7 +11,7 @@ import {AsyncSubject} from 'rxjs/AsyncSubject';
 
 export class ParamFilter<E = Object> {
 
-    static resultKeys: number[] = [10, 25, 50];
+    public resultKeys: number[] = [10, 25, 50];
 
     filters: Array<Filter> = [];
     orderings: Array<Ordering> = [];

@@ -10,6 +10,8 @@ import {PaginationModule} from 'ngx-bootstrap';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {FormUtilitiesModule} from '@braune-digital/form-utilities';
 import {FilterComponent} from './components/filter/filter.component';
+import {ListLoadingComponent} from './components/loading/list-loading.component';
+import {ListContainerComponent} from './components/list-container/list-container.component';
 
 @NgModule({
     imports: [
@@ -27,13 +29,17 @@ import {FilterComponent} from './components/filter/filter.component';
         ResultsPerPageComponent,
         PaginationFilterComponent,
         OrderingComponent,
-        FilterComponent
+        FilterComponent,
+        ListLoadingComponent,
+        ListContainerComponent
     ],
     exports: [
         ResultsPerPageComponent,
         PaginationFilterComponent,
         OrderingComponent,
-        FilterComponent
+        FilterComponent,
+        ListLoadingComponent,
+        ListContainerComponent
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

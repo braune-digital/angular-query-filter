@@ -1,0 +1,16 @@
+$results-per-page-ng-select-select-height: 30px !default;
+
+:host {
+  .form-group {
+    margin-bottom: 0;
+  }
+  ::ng-deep {
+    ng-select {
+      &.ng-select.ng-single .ng-control,
+      &.ng-select.ng-multiple .ng-control {
+        height: $results-per-page-ng-select-select-height;
+        margin-top: 0;
+      }
+    }
+  }
+}
