@@ -24,7 +24,7 @@ export class ListContainerComponent implements OnDestroy, OnInit {
 
     ngOnDestroy(): void {
         this.isLoadingEventSubscription.unsubscribe();
+        this.firstLoaded = false;
     }
-
 
 }
