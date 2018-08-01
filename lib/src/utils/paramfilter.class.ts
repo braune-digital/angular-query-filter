@@ -7,6 +7,7 @@ import {AndFilter} from './filter/types/and.filter';
 import {HttpClient} from '@angular/common/http';
 import { map, tap } from 'rxjs/operators';
 import {FilterComponent} from '../components/filter/filter.component';
+import {AsyncSubject} from 'rxjs/AsyncSubject';
 
 export class ParamFilter<E = Object> {
 
@@ -20,7 +21,7 @@ export class ParamFilter<E = Object> {
 
     range: { total: number, pages: number, from?: number, to?: number } = {total: 0, pages: 0};
 
-    responseEvent = new BehaviorSubject<Array<E>>(null);
+    responseEvent: BehaviorSubject<Array<E>> = new BehaviorSubject([]);
     isLoadingEvent: BehaviorSubject<boolean> = new BehaviorSubject(true);
 
     filtersFromLastRequest: string;
