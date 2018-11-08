@@ -36,7 +36,6 @@ export class PaginationFilterComponent implements OnInit {
     }
 
     pageChanged(page: number): void {
-        this.filterService.page = page;
         this.filterService.refresh();
     }
 }
