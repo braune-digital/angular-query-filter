@@ -37,6 +37,7 @@ export class ListContainerComponent implements OnDestroy, OnInit, AfterContentIn
         this.filterComponents.forEach(filter => {
             this.filter.add(filter)
         });
+        this.filter.isReady.next(true);
     }
 
 

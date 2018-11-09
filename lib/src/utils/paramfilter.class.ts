@@ -24,6 +24,7 @@ export class ParamFilter<E = Object> {
 
     responseEvent: BehaviorSubject<Array<E>> = new BehaviorSubject([]);
     isLoadingEvent: BehaviorSubject<boolean> = new BehaviorSubject(true);
+    isReady: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
     filtersFromLastRequest: string;
 
@@ -102,7 +103,6 @@ export class ParamFilter<E = Object> {
         if (this.orderings.indexOf(ordering) < 0) {
             this.orderings.push(ordering);
         }
-
         this.build();
     }
 

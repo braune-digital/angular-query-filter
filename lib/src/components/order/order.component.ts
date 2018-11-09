@@ -11,6 +11,8 @@ export class OrderComponent implements OnInit {
 
   @Input() filter: ParamFilter;
   @Input() order: string;
+  @Input() active: boolean = false;
+  @Input() dir: string;
   @Output() onOrder: EventEmitter<Ordering> = new EventEmitter();
 
   ordering: Ordering;
@@ -20,7 +22,7 @@ export class OrderComponent implements OnInit {
   ngOnInit() {
     this.ordering = this.filter.getOrdering(this.order);
     if(!this.ordering){
-      this.ordering = new Ordering(this.order, 'desc', false);
+      this.ordering = new Ordering(this.order, (this.dir) ? this.dir : 'desc', this.active);
       this.filter.addOrdering(this.ordering);
     }
   }
