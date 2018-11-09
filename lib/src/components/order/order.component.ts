@@ -20,11 +20,8 @@ export class OrderComponent implements OnInit {
   ngOnInit() {
     this.ordering = this.filter.getOrdering(this.order);
     if(!this.ordering){
-      console.log(this.order);
-      console.log(this.filter);
       this.ordering = new Ordering(this.order, 'desc', false);
       this.filter.addOrdering(this.ordering);
-        console.log(this.filter);
     }
   }
 
