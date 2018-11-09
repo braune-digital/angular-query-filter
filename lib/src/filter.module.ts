@@ -12,6 +12,7 @@ import {FormUtilitiesModule} from '@braune-digital/form-utilities';
 import {FilterComponent} from './components/filter/filter.component';
 import {ListLoadingComponent} from './components/loading/list-loading.component';
 import {ListContainerComponent} from './components/list-container/list-container.component';
+import {OrderComponent} from './components/order/order.component';
 
 @NgModule({
     imports: [
@@ -31,7 +32,8 @@ import {ListContainerComponent} from './components/list-container/list-container
         OrderingComponent,
         FilterComponent,
         ListLoadingComponent,
-        ListContainerComponent
+        ListContainerComponent,
+        OrderComponent
     ],
     exports: [
         ResultsPerPageComponent,
@@ -39,7 +41,8 @@ import {ListContainerComponent} from './components/list-container/list-container
         OrderingComponent,
         FilterComponent,
         ListLoadingComponent,
-        ListContainerComponent
+        ListContainerComponent,
+        OrderComponent
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

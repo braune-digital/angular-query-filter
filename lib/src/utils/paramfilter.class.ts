@@ -163,6 +163,17 @@ export class ParamFilter<E = Object> {
         return this.resultsPerPage;
     }
 
+    public getOrdering(property: string): Ordering {
+        return this.orderings.find(order => (order.property === property));
+    }
+
+    public resetOrderings(refresh: boolean = false): void {
+        this.orderings.forEach(order => order.active = false);
+        if (refresh) {
+            this.refresh();
+        }
+    }
+
     get requestUrl(): string {
         return this._requestUrl;
     }

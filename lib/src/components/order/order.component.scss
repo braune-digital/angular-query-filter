@@ -1,0 +1,41 @@
+:host {
+  .order {
+    display: flex;
+    cursor: pointer;
+
+    .order-action {
+
+      color: #cccccc;
+      position: relative;
+      font-size: 0;
+      line-height: 0;
+
+      display: inline-block;
+      height: 7px;
+      width: 7px;
+
+      border-top: 5px solid transparent;
+      border-bottom: 5px solid transparent;
+      border-left: 7px solid #cccccc;
+      margin-left: 7px;
+
+      &.asc {
+        transform: rotate(-90deg);
+        &.active {
+          border-left-color: black;
+        }
+      }
+
+      &.desc {
+        margin-left: 5px;
+        transform: rotate(90deg);
+
+        &.active {
+          border-left-color: black;
+        }
+      }
+    }
+
+  }
+
+}

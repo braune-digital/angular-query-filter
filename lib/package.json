@@ -1,9 +1,9 @@
 {
   "$schema": "../node_modules/ng-packagr/package.schema.json",
   "name": "@braune-digital/angular-query-filter",
-  "version": "1.0.0-alpha.18",
+  "version": "1.0.0-alpha.19",
   "description": "Components to use with the query-filter-bundle.",
-  "author": "Jannik <jc@braune-digital.com>",
+  "author": "Braune Digital GmbH <mail@braune-digital.com>",
   "license": "GNU",
   "repository": "git@github.com:braune-digital/angular-query-filter.git",
   "peerDependencies": {
