@@ -37,8 +37,6 @@ export class FilterComponent implements AfterViewInit, OnInit {
     @Input() filterPlaceholder = '';
     @Output() onRefreshFilter: EventEmitter<Filter> = new EventEmitter();
 
-    // @ViewChild(forwardRef(() => SelectComponent)) selectComponent: SelectComponent;
-
     constructor(private translate: TranslateService) {
     }
 
@@ -101,9 +99,6 @@ export class FilterComponent implements AfterViewInit, OnInit {
         this.isResetting = true;
         this.model = null;
         this.filter.active = false;
-        // if (this.selectComponent) {
-        //     this.selectComponent.clearSelection();
-        // }
         this.isResetting = false;
     }
 

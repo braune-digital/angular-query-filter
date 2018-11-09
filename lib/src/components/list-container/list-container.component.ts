@@ -1,8 +1,16 @@
-import {AfterViewInit, Component, Input, OnDestroy, OnInit, QueryList, ViewChildren} from '@angular/core';
+import {
+    AfterContentInit,
+    AfterViewInit,
+    Component,
+    ContentChildren,
+    Input,
+    OnDestroy,
+    OnInit,
+    QueryList
+} from '@angular/core';
 import {Subscription} from 'rxjs/Subscription';
 import {ParamFilter} from '../../utils/paramfilter.class';
 import {FilterComponent} from '../filter/filter.component';
-import {Ordering} from '../../utils/filter/order';
 
 @Component({
     moduleId: module.id,
@@ -10,12 +18,12 @@ import {Ordering} from '../../utils/filter/order';
     templateUrl: 'list-container.component.html',
     styleUrls: ['./list-container.component.scss']
 })
-export class ListContainerComponent implements OnDestroy, OnInit, AfterViewInit {
+export class ListContainerComponent implements OnDestroy, OnInit, AfterContentInit, AfterViewInit {
 
     @Input("filter") filter: ParamFilter;
     isLoadingEventSubscription: Subscription;
     public firstLoaded: boolean = false;
-    @ViewChildren(FilterComponent) filterComponents: QueryList<FilterComponent>;
+    @ContentChildren(FilterComponent) filterComponents: QueryList<FilterComponent>;
 
     ngOnInit(): void {
         this.isLoadingEventSubscription = this.filter.isLoadingEvent.subscribe(_ => {
@@ -26,7 +34,14 @@ export class ListContainerComponent implements OnDestroy, OnInit, AfterViewInit 
     }
 
     ngAfterViewInit(): void {
-        this.filterComponents.forEach(filter => this.filter.add(filter));
+        this.filterComponents.forEach(filter => {
+            this.filter.add(filter)
+        });
+    }
+
+
+
+    ngAfterContentInit(): void {
     }
 
     resetFilter(withRefresh: boolean = true): void {
