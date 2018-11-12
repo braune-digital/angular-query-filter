@@ -33,11 +33,14 @@ export class ParamFilter<E = Object> {
     resultsPerPage = 10;
     grouped = false;
 
-    constructor(private _requestUrl: string, private api: HttpClient, withScope?: boolean) {
+    params = {};
+
+    constructor(private _requestUrl: string, private api: HttpClient, private params:Object = {}, withScope?: boolean) {
         if (withScope !== undefined) {
             this.withScope = withScope;
         }
 
+        this.params = params;
     }
 
     public refresh(): void {
@@ -112,7 +115,7 @@ export class ParamFilter<E = Object> {
     }
 
     public build(): any {
-        const searchParams = {};
+        const searchParams = this.params;
         const filterObjects: Array<object> = [];
         if (this.filters) {
             if (this.filters.length === 1) {
