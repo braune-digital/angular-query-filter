@@ -33,12 +33,10 @@ export class ParamFilter<E = Object> {
     resultsPerPage = 10;
     grouped = false;
 
-
-    constructor(private _requestUrl: string, private api: HttpClient, private params:Object = {}, withScope?: boolean) {
+    constructor(private _requestUrl: string, private api: HttpClient, private params: Object = {}, withScope?: boolean) {
         if (withScope !== undefined) {
             this.withScope = withScope;
         }
-
     }
 
     public refresh(): void {
