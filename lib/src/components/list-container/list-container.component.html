@@ -1,6 +1,7 @@
 <div [ngClass]="{'init-state': !firstLoaded}">
     <ng-container *ngIf="(filter.isLoadingEvent | async) === true">
-        <list-loading></list-loading>
+        <div #ref><ng-content select="[loading]"></ng-content></div>
+        <list-loading *ngIf="ref.childNodes.length == 0"></list-loading>
     </ng-container>
     <ng-container *ngIf="firstLoaded">
         <ng-content select="[filter]"></ng-content>
