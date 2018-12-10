@@ -31,7 +31,13 @@ export class ParamFilter<E = Object> {
     resultsPerPage = 10;
     grouped = false;
 
-    constructor(private _requestUrl: string, private api: HttpClient, private params: Object = {}, private withScope: boolean = true, private headers: Object = {}) {
+    constructor(
+        private _requestUrl: string,
+        private api: HttpClient,
+        private params: Object = {},
+        private withScope: boolean = true,
+        private headers: HttpHeaders | { [header: string]: string | string[]; } = {}
+    ) {
     }
 
     public refresh(): void {
