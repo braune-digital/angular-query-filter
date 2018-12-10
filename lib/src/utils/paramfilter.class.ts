@@ -28,15 +28,10 @@ export class ParamFilter<E = Object> {
 
     filtersFromLastRequest: string;
 
-    withScope = true;
-
     resultsPerPage = 10;
     grouped = false;
 
-    constructor(private _requestUrl: string, private api: HttpClient, private params: Object = {}, withScope?: boolean) {
-        if (withScope !== undefined) {
-            this.withScope = withScope;
-        }
+    constructor(private _requestUrl: string, private api: HttpClient, private params: Object = {}, private withScope: boolean = true, private headers: Object = {}) {
     }
 
     public refresh(): void {
@@ -53,7 +48,8 @@ export class ParamFilter<E = Object> {
             this.requestUrl,
             {
                 params: this.build(),
-                observe: 'response'
+                observe: 'response',
+                headers: this.headers
             }
         ).pipe(
             tap(response => this.preparePagination(response)),
