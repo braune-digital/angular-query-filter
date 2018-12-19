@@ -1,13 +1,10 @@
-import {Response} from '@angular/http';
 import {Observable, BehaviorSubject} from 'rxjs';
-import {Subject} from 'rxjs/Subject';
 import {Filter} from './filter/filter';
 import {Ordering} from './filter/order';
 import {AndFilter} from './filter/types/and.filter';
 import {HttpHeaders, HttpClient} from '@angular/common/http';
 import { map, tap } from 'rxjs/operators';
 import {FilterComponent} from '../components/filter/filter.component';
-import {AsyncSubject} from 'rxjs/AsyncSubject';
 
 export class ParamFilter<E = Object> {
 
