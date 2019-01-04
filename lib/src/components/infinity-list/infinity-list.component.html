@@ -8,7 +8,7 @@
     </ng-container>
     <ng-container *ngIf="(filter.responseEvent | async)?.length && firstLoaded">
         <ng-content select="[list]"></ng-content>
-        <div (click)="loadNext()" *ngIf="firstLoaded && filter.range.pages >= filter.page">
+        <div (click)="loadNext()" *ngIf="firstLoaded && filter.range.pages > filter.page">
             <ng-content select="[next]"></ng-content>
         </div>
     </ng-container>
