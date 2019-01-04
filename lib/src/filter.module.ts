@@ -13,6 +13,7 @@ import {FilterComponent} from './components/filter/filter.component';
 import {ListLoadingComponent} from './components/loading/list-loading.component';
 import {ListContainerComponent} from './components/list-container/list-container.component';
 import {OrderComponent} from './components/order/order.component';
+import { InfinityListComponent } from './components/infinity-list/infinity-list.component';
 
 @NgModule({
     imports: [
@@ -33,6 +34,7 @@ import {OrderComponent} from './components/order/order.component';
         FilterComponent,
         ListLoadingComponent,
         ListContainerComponent,
+        InfinityListComponent,
         OrderComponent
     ],
     exports: [
@@ -42,6 +44,7 @@ import {OrderComponent} from './components/order/order.component';
         FilterComponent,
         ListLoadingComponent,
         ListContainerComponent,
+        InfinityListComponent,
         OrderComponent
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]

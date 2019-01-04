@@ -1,6 +1,7 @@
 // Components
 export { FilterComponent } from './components/filter/filter.component';
 export { ListContainerComponent } from './components/list-container/list-container.component';
+export { InfinityListComponent } from './components/infinity-list/infinity-list.component';
 export { ListLoadingComponent } from './components/loading/list-loading.component';
 
 // Directives
