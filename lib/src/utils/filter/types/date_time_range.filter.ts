@@ -1,17 +1,14 @@
 import { Filter } from '../filter';
-import * as moment_ from 'moment';
-import { Moment } from 'moment';
-
-const moment = moment_;
+import { format, subDays } from 'date-fns';
 
 export class DateTimeRangeFilter extends Filter {
     public type = 'date_time_range';
-    public min: Moment = moment().subtract('day', 7);
-    public max: Moment = moment();
+    public min: Date = subDays(new Date(), 7);
+    public max: Date = new Date();
     public unit: string;
     public property: string;
 
-    constructor(property: string, min: Moment, max: Moment, unit: string) {
+    constructor(property: string, min: Date, max: Date, unit: string) {
         super();
         this.property = property;
         this.min = min;
@@ -24,8 +21,8 @@ export class DateTimeRangeFilter extends Filter {
             return {
                 filter: this.type,
                 property: this.property,
-                min: this.min.toISOString(),
-                max: this.max.toISOString()
+                min: format(this.min, 'YYYY-MM-DDTHH:mm:ss.SSSZZ'),
+                max: format(this.max, 'YYYY-MM-DDTHH:mm:ss.SSSZZ')
             };
         }
         return null;

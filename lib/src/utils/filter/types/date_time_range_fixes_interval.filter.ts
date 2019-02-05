@@ -1,4 +1,5 @@
 import {DateTimeRangeFilter} from './date_time_range.filter';
+import { format } from "date-fns";
 
 export class DateTimeRangeFixedIntervalFilter extends DateTimeRangeFilter {
 
@@ -7,8 +8,8 @@ export class DateTimeRangeFixedIntervalFilter extends DateTimeRangeFilter {
       return {
         filter: this.type,
         property: this.property,
-        min: this.min.toISOString(),
-        max: this.max.toISOString()
+        min: format(this.min, 'YYYY-MM-DDTHH:mm:ss.SSSZZ'),
+        max: format(this.max, 'YYYY-MM-DDTHH:mm:ss.SSSZZ')
       };
     }
     return null;
