@@ -12,6 +12,8 @@ export { Ordering } from './utils/filter/order';
 export { Filter } from './utils/filter/filter';
 export { EqualFilter } from './utils/filter/types/equal.filter';
 export { InFilter } from './utils/filter/types/in.filter';
+export { IsNullFilter } from './utils/filter/types/is-null.filter';
+export { IsNotNullFilter } from './utils/filter/types/is-not-null.filter';
 export { AndFilter } from './utils/filter/types/and.filter';
 export { DateTimeRangeFilter } from './utils/filter/types/date_time_range.filter';
 export { DateTimeRangeFixedIntervalFilter } from './utils/filter/types/date_time_range_fixes_interval.filter';
