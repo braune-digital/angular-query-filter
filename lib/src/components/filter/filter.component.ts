@@ -9,6 +9,7 @@ import { Filter } from '../../utils/filter/filter';
 import { TextFilter } from '../../utils/filter/types/text.filter';
 import { EqualFilter } from '../../utils/filter/types/equal.filter';
 import {InstanceofFilter} from '../../utils/filter/types/instanceof.filter';
+import {DateTimeRangeFilter} from '../../utils/filter/types/date_time_range.filter';
 
 @Component({
     selector: 'filter-component',
@@ -37,6 +38,9 @@ export class FilterComponent implements AfterViewInit, OnInit {
     @Input() filterPlaceholder = '';
     @Output() onRefreshFilter: EventEmitter<Filter> = new EventEmitter();
 
+    @Input() minDate: Date = new Date(0);
+    @Input() maxDate: Date = new Date();
+
     constructor(private translate: TranslateService) {
     }
 
@@ -55,6 +59,10 @@ export class FilterComponent implements AfterViewInit, OnInit {
                 break;
             case 'instanceof':
                 this.filter = new InstanceofFilter(this.model);
+                break;
+            case 'date-time-range':
+                this.filter = new DateTimeRangeFilter(this.params.prop, this.minDate, this.maxDate,  this.model);
+                break;
         }
     }
 
@@ -64,6 +72,16 @@ export class FilterComponent implements AfterViewInit, OnInit {
                 this.filterPlaceholder = res;
             });
         }
+    }
+
+    onMinDatePicked(minDate: Date) {
+        this.minDate = minDate;
+        this.refreshFilter();
+    }
+
+    onMaxDatePicked(maxDate: Date) {
+        this.maxDate = maxDate;
+        this.refreshFilter();
     }
 
     onChange(data: { value: any, label: string }): void {
@@ -117,6 +135,9 @@ export class FilterComponent implements AfterViewInit, OnInit {
             this.filter.text = this.model;
         } else if (this.filter instanceof EqualFilter || this.filter instanceof InstanceofFilter) {
             this.filter.values = [this.model];
+        } else if (this.filter instanceof DateTimeRangeFilter) {
+            this.filter.min = this.minDate;
+            this.filter.max = this.maxDate;
         }
         if (emitEvent) {
             this.onRefreshFilter.emit(this.filter);

@@ -21,6 +21,14 @@
            bindLabel="label"
 ></ng-select>
 
+<ng-container *ngIf="type === 'date-time-range'">
+
+    <datepicker (activeDateChange)="onMinDatePicked($event)"></datepicker>
+    <datepicker (activeDateChange)="onMaxDatePicked($event)"></datepicker>
+
+</ng-container>
+
+
 <!--<select-component *ngIf="type === 'select' || type === 'instanceof'"-->
                   <!--controlClass="form-control&#45;&#45;small"-->
                   <!--[selectPlaceholder]="filterPlaceholder"-->

@@ -21,8 +21,8 @@ export class DateTimeRangeFilter extends Filter {
             return {
                 filter: this.type,
                 property: this.property,
-                min: format(this.min, 'YYYY-MM-DDTHH:mm:ss.SSSZZ'),
-                max: format(this.max, 'YYYY-MM-DDTHH:mm:ss.SSSZZ')
+                min: this.min,
+                max: this.max
             };
         }
         return null;
