@@ -23,7 +23,9 @@ export class FilterComponent implements AfterViewInit, OnInit {
     isResetting = false;
     _options: Array<{ value: any; label: string }> = [];
 
-    @Input() type = 'text';
+    @Input()
+    type = 'text';
+
     @Input() set options(options: Array<{ value: any; label: string }>) {
       this._options = options.map(_ => {
         return {
@@ -32,23 +34,38 @@ export class FilterComponent implements AfterViewInit, OnInit {
         };
       });
     }
-    @Input() resetable = true;
-    @Input() selectClass: string;
-    @Input() params: any;
-    @Input() filterPlaceholder = '';
-    @Output() onRefreshFilter: EventEmitter<Filter> = new EventEmitter();
+    @Input()
+    resetable = true;
+
+    @Input()
+    selectClass: string;
+
+    @Input()
+    params: any;
+
+    @Input()
+    filterPlaceholder = '';
+
+    @Output()
+    onRefreshFilter: EventEmitter<Filter> = new EventEmitter();
 
     /* Inputs for DateRange and Datepicker */
     /* Initialize lower and upper Date for default selection from very first date until today */
-    @Input() lowerDate: Date = new Date(0);
-    @Input() upperDate: Date = new Date();
+    @Input()
+    lowerDate: Date = new Date(0);
+
+    @Input()
+    upperDate: Date = new Date();
+
     /* Min- and Maximum Date for picking Range*/
-    @Input() minDate: Date = new Date();
-    @Input() maxDate: Date = new Date();
+    @Input()
+    minDate: Date = new Date();
 
-    @Input() lang: string;
+    @Input()
+    maxDate: Date = new Date();
 
-
+    @Input()
+    lang: string;
 
     constructor(private translate: TranslateService) {}
 
@@ -69,7 +86,6 @@ export class FilterComponent implements AfterViewInit, OnInit {
                 this.filter = new InstanceofFilter(this.model);
                 break;
             case 'date-time-range':
-                console.log('filtercomp:' + this.lang);
                 this.filter = new DateTimeRangeFilter(this.params.prop, this.lowerDate, this.upperDate,  this.model);
                 break;
         }
@@ -85,9 +101,15 @@ export class FilterComponent implements AfterViewInit, OnInit {
 
     /* Get Dates and set them to current filter*/
     onDatesPicked(dates: Array<Date>) {
-        this.lowerDate = dates[0];
-        this.upperDate = dates[1];
+        if (dates && dates.length === 2) {
+            this.lowerDate = dates[0];
+            this.upperDate = dates[1];
+        } else {
+            this.lowerDate = new Date(0);
+            this.upperDate = new Date();
+        }
         this.refreshFilter();
+
     }
 
     onChange(data: { value: any, label: string }): void {

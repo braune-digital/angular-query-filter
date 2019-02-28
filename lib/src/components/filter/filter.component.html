@@ -23,7 +23,6 @@
 
 <ng-container *ngIf="type === 'date-time-range'">
     <bd-daterange  [placeholder]="filterPlaceholder"
-                   [bsConfig]="{ rangeInputFormat: 'DD.MM.YYYY' }"
                    (datesPicked)="onDatesPicked($event)"
                    [minDate]="minDate"
                    [maxDate]="maxDate"
