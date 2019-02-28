@@ -38,11 +38,19 @@ export class FilterComponent implements AfterViewInit, OnInit {
     @Input() filterPlaceholder = '';
     @Output() onRefreshFilter: EventEmitter<Filter> = new EventEmitter();
 
-    @Input() minDate: Date = new Date(0);
+    /* Inputs for DateRange and Datepicker */
+    /* Initialize lower and upper Date for default selection from very first date until today */
+    @Input() lowerDate: Date = new Date(0);
+    @Input() upperDate: Date = new Date();
+    /* Min- and Maximum Date for picking Range*/
+    @Input() minDate: Date = new Date();
     @Input() maxDate: Date = new Date();
 
-    constructor(private translate: TranslateService) {
-    }
+    @Input() lang: string;
+
+
+
+    constructor(private translate: TranslateService) {}
 
     public getFilter(): Filter {
         return this.filter;
@@ -61,7 +69,8 @@ export class FilterComponent implements AfterViewInit, OnInit {
                 this.filter = new InstanceofFilter(this.model);
                 break;
             case 'date-time-range':
-                this.filter = new DateTimeRangeFilter(this.params.prop, this.minDate, this.maxDate,  this.model);
+                console.log('filtercomp:' + this.lang);
+                this.filter = new DateTimeRangeFilter(this.params.prop, this.lowerDate, this.upperDate,  this.model);
                 break;
         }
     }
@@ -74,13 +83,10 @@ export class FilterComponent implements AfterViewInit, OnInit {
         }
     }
 
-    onMinDatePicked(minDate: Date) {
-        this.minDate = minDate;
-        this.refreshFilter();
-    }
-
-    onMaxDatePicked(maxDate: Date) {
-        this.maxDate = maxDate;
+    /* Get Dates and set them to current filter*/
+    onDatesPicked(dates: Array<Date>) {
+        this.lowerDate = dates[0];
+        this.upperDate = dates[1];
         this.refreshFilter();
     }
 
@@ -136,8 +142,8 @@ export class FilterComponent implements AfterViewInit, OnInit {
         } else if (this.filter instanceof EqualFilter || this.filter instanceof InstanceofFilter) {
             this.filter.values = [this.model];
         } else if (this.filter instanceof DateTimeRangeFilter) {
-            this.filter.min = this.minDate;
-            this.filter.max = this.maxDate;
+            this.filter.min = this.lowerDate;
+            this.filter.max = this.upperDate;
         }
         if (emitEvent) {
             this.onRefreshFilter.emit(this.filter);
