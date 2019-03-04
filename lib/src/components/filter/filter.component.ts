@@ -27,13 +27,14 @@ export class FilterComponent implements AfterViewInit, OnInit {
     type = 'text';
 
     @Input() set options(options: Array<{ value: any; label: string }>) {
-      this._options = options.map(_ => {
-        return {
+        this._options = options.map(_ => {
+            return {
           value: _.value,
           label: this.translate.instant(_.label)
         };
       });
     }
+
     @Input()
     resetable = true;
 
@@ -66,6 +67,10 @@ export class FilterComponent implements AfterViewInit, OnInit {
 
     @Input()
     lang: string;
+
+    /* Triggers for bsDatepicker */
+    @Input()
+    datepickerTrigger = 'click';
 
     constructor(private translate: TranslateService) {}
 

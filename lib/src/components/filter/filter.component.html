@@ -24,6 +24,7 @@
 <ng-container *ngIf="type === 'date-time-range'">
     <bd-daterange  [placeholder]="filterPlaceholder"
                    (datesPicked)="onDatesPicked($event)"
+                   [triggers]="datepickerTrigger"
                    [minDate]="minDate"
                    [maxDate]="maxDate"
                    [lang]="lang"
@@ -31,15 +32,15 @@
     </bd-daterange>
 </ng-container>
 
-
-<!--<select-component *ngIf="type === 'select' || type === 'instanceof'"-->
-                  <!--controlClass="form-control&#45;&#45;small"-->
-                  <!--[selectPlaceholder]="filterPlaceholder"-->
-                  <!--(onSelect)="onChange($event)"-->
-                  <!--(onRemove)="onRemove($event)"-->
-                  <!--[selectClass]="selectClass"-->
-                  <!--[resetable]="resetable"-->
-                  <!--[options]="options"-->
-                  <!--optionValue="value"-->
-                  <!--optionLabel="label">-->
-<!--</select-component>-->
+<!--<ng-container *ngIf="type === 'instanceof'">-->
+    <!--<ng-select controlClass="form-control&#45;&#45;small"-->
+              <!--[selectPlaceholder]="filterPlaceholder"-->
+              <!--(onSelect)="onChange($event)"-->
+              <!--(onRemove)="onRemove($event)"-->
+              <!--[selectClass]="selectClass"-->
+              <!--[resetable]="resetable"-->
+              <!--[options]="options"-->
+              <!--optionValue="value"-->
+              <!--optionLabel="label">-->
+    <!--</ng-select>-->
+<!--</ng-container>-->
