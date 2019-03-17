@@ -33,6 +33,7 @@
 
 <ng-select *ngIf="type === 'instanceof'"
            bdSelect
+           [(ngModel)]="model"
            [placeholder]="filterPlaceholder"
            (change)="onChange($event)"
            (remove)="onRemove($event)"
