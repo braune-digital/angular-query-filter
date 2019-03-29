@@ -15,7 +15,7 @@
            bdSelect
            [placeholder]="filterPlaceholder"
            (change)="onChange($event)"
-           (remove)="onRemove($event)"
+           (remove)="onRemove()"
            [items]="_options"
            bindValue="value"
            bindLabel="label"
@@ -36,7 +36,7 @@
            [(ngModel)]="model"
            [placeholder]="filterPlaceholder"
            (change)="onChange($event)"
-           (remove)="onRemove($event)"
+           (remove)="onRemove()"
            [items]="_options"
            bindValue="value"
            bindLabel="label"
