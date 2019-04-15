@@ -1,5 +1,5 @@
 <div (click)="handleOrderClick()" class="order">
   <ng-content></ng-content>
-  <span class="order-action asc" [ngClass]="{'active': ordering.ordering === 'asc' && ordering.active }">ASC</span>
-  <span class="order-action desc" [ngClass]="{'active': ordering.ordering === 'desc' && ordering.active }">DESC</span>
+  <span class="order-action asc" [ngClass]="{'active': ordering.ordering === 'asc' && ordering.active }"></span>
+  <span class="order-action desc" [ngClass]="{'active': ordering.ordering === 'desc' && ordering.active }"></span>
 </div>

@@ -15,7 +15,7 @@
            bdSelect
            [placeholder]="filterPlaceholder"
            (change)="onChange($event)"
-           (remove)="onRemove($event)"
+           (remove)="onRemove()"
            [items]="_options"
            bindValue="value"
            bindLabel="label"
@@ -32,15 +32,13 @@
     </bd-daterange>
 </ng-container>
 
-<!--<ng-container *ngIf="type === 'instanceof'">-->
-    <!--<ng-select controlClass="form-control&#45;&#45;small"-->
-              <!--[selectPlaceholder]="filterPlaceholder"-->
-              <!--(onSelect)="onChange($event)"-->
-              <!--(onRemove)="onRemove($event)"-->
-              <!--[selectClass]="selectClass"-->
-              <!--[resetable]="resetable"-->
-              <!--[options]="options"-->
-              <!--optionValue="value"-->
-              <!--optionLabel="label">-->
-    <!--</ng-select>-->
-<!--</ng-container>-->
+<ng-select *ngIf="type === 'instanceof'"
+           bdSelect
+           [(ngModel)]="model"
+           [placeholder]="filterPlaceholder"
+           (change)="onChange($event)"
+           (remove)="onRemove()"
+           [items]="_options"
+           bindValue="value"
+           bindLabel="label"
+></ng-select>
