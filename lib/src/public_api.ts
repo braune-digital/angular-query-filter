@@ -11,6 +11,7 @@ export { ParamFilter } from './utils/paramfilter.class';
 export { Ordering } from './utils/filter/order';
 export { Filter } from './utils/filter/filter';
 export { EqualFilter } from './utils/filter/types/equal.filter';
+export { TextFilter } from './utils/filter/types/text.filter';
 export { InFilter } from './utils/filter/types/in.filter';
 export { IsNullFilter } from './utils/filter/types/is-null.filter';
 export { IsNotNullFilter } from './utils/filter/types/is-not-null.filter';
