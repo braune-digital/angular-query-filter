@@ -87,6 +87,10 @@ export class FilterComponent implements AfterViewInit, OnInit {
                 this.filter = new EqualFilter(this.params.prop, this.model);
                 this.filter.active = false;
                 break;
+            case 'select_like':
+                this.filter = new TextFilter(this.params.properties, this.model);
+                this.filter.active = false;
+                break;
             case 'instanceof':
                 this.filter = new InstanceofFilter(this.model);
                 break;
