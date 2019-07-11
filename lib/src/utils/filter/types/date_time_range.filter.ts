@@ -8,9 +8,10 @@ export class DateTimeRangeFilter extends Filter {
     public unit: string;
     public property: string;
 
-    constructor(property: string, min: Date, max: Date, unit: string) {
+    constructor(property: string, min: Date, max: Date, unit: string, name?: string) {
         super();
         this.property = property;
+        this.name = name;
         this.min = min;
         this.max = max;
         this.unit = unit;
@@ -22,7 +23,8 @@ export class DateTimeRangeFilter extends Filter {
                 filter: this.type,
                 property: this.property,
                 min: this.min,
-                max: this.max
+                max: this.max,
+                name: this.name
             };
         }
         return null;

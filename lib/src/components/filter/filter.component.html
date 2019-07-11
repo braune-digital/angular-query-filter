@@ -13,6 +13,7 @@
 
 <ng-select *ngIf="type === 'select' || type === 'select_like'"
            bdSelect
+           [(ngModel)]="model"
            [placeholder]="filterPlaceholder"
            (change)="onChange($event)"
            (remove)="onRemove()"

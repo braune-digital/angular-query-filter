@@ -5,6 +5,8 @@ import {AndFilter} from './filter/types/and.filter';
 import {HttpHeaders, HttpClient} from '@angular/common/http';
 import { map, tap } from 'rxjs/operators';
 import {FilterComponent} from '../components/filter/filter.component';
+import {Md5} from 'ts-md5/dist/md5';
+import {RestoreService} from '../services/restore.service';
 
 export class ParamFilter<E = Object> {
 
@@ -28,16 +30,39 @@ export class ParamFilter<E = Object> {
     resultsPerPage = 10;
     grouped = false;
 
+    // Storage
+    storageUrl = window.location.href + '/searchparams';
+    filterObjects: Array<object> = [];
+    orderingsObjects: { [key: string]: string } = {};
+
     constructor(
         private _requestUrl: string,
         private api: HttpClient,
         private params: Object = {},
         private withScope: boolean = true,
-        private headers: HttpHeaders | { [header: string]: string | string[]; } = {}
+        private headers: HttpHeaders | { [header: string]: string | string[]; } = {},
+        private restoreService: RestoreService = new RestoreService(),
     ) {
+        
+        // Restore pagination from storage
+        if (sessionStorage.getItem(this.storageUrl)) {
+            this.params = JSON.parse(sessionStorage.getItem(this.storageUrl));
+            this.orderingsObjects = JSON.parse(this.params['order']);
+
+            Object.entries(this.orderingsObjects).forEach( ordering => {
+                const tempOrdering: Ordering = new Ordering('', '');
+                tempOrdering.property = ordering[0];
+                tempOrdering.ordering = ordering[1];
+                this.addOrdering(tempOrdering);
+            });
+
+            this.page = parseInt(this.params['page']);
+            this.resultsPerPage = parseInt(this.params['resultsPerPage']);
+        }
     }
 
     public refresh(): void {
+
         this.isLoadingEvent.next(true);
         this.refreshPromise()
             .subscribe((response: Array<E>) => {
@@ -93,61 +118,65 @@ export class ParamFilter<E = Object> {
         } else {
             this.filters[this.filters.findIndex(item => item.id === f.id)] = f;
         }
-
-        this.build();
     }
 
     public addOrdering(ordering: Ordering): void {
         if (this.orderings.indexOf(ordering) < 0) {
             this.orderings.push(ordering);
         }
-        this.build();
     }
 
     public setOrderings(orderings: Array<Ordering>): void {
         this.orderings = orderings;
-        this.build();
     }
 
     public build(): any {
+
+        console.log('build');
+
         const searchParams = this.params;
-        const filterObjects: Array<object> = [];
+
         if (this.filters) {
+            console.log(this.filters);
             if (this.filters.length === 1) {
                 const filter = this.filters[0].get();
                 if (filter) {
-                    filterObjects.push(filter);
+                    this.filterObjects.push(filter);
                 }
             } else {
                 const andFilter = new AndFilter(this.filters);
-                filterObjects.push(andFilter.get());
+                this.filterObjects[0] = andFilter.get();
             }
         }
 
-        const orderings: { [key: string]: string } = {};
         if (this.orderings) {
             this.orderings.forEach(ordering => {
                 if (ordering.active) {
-                    orderings[ordering.property] = ordering.ordering;
+                    this.orderingsObjects[ordering.property] = ordering.ordering;
                 }
             });
         }
 
-        const filterObjectsString = JSON.stringify(filterObjects);
+        const filterObjectsString = JSON.stringify(this.filterObjects);
 
         if (this.filtersFromLastRequest && this.filtersFromLastRequest !== filterObjectsString) {
             this.page = 1;
         }
-        this.filtersFromLastRequest = JSON.stringify(filterObjects);
+        this.filtersFromLastRequest = JSON.stringify(this.filterObjects);
 
         searchParams['filter'] = filterObjectsString;
-        searchParams['order'] = JSON.stringify(orderings);
+        searchParams['order'] = JSON.stringify(this.orderingsObjects);
         searchParams['page'] = this.page.toString();
         searchParams['resultsPerPage'] = this.resultsPerPage.toString();
         if (this.grouped) {
             searchParams['grouped'] = this.grouped.toString();
         }
 
+        // Store filters in sessionStorage
+        this.restoreService.storeFiltersByName(this.filters);
+
+        // Store searchparams to sessionStorage. this is for ordering and resultsPerPage
+        sessionStorage.setItem(this.storageUrl, JSON.stringify(searchParams));
 
         return searchParams;
     }
@@ -171,6 +200,16 @@ export class ParamFilter<E = Object> {
             this.refresh();
         }
     }
+
+    public removeOrdering(ordering: Ordering) {
+        this.orderings = this.orderings.filter(obj => obj !== ordering);
+        this.refresh();
+    }
+
+    public getFilter(): Array<Filter> {
+        return this.filters;
+    }
+
 
     get requestUrl(): string {
         return this._requestUrl;

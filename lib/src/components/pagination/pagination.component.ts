@@ -10,8 +10,11 @@ import { ParamFilter } from '../../utils/paramfilter.class';
 })
 export class PaginationFilterComponent implements OnInit {
 
-    @Input('filterService') filterService: ParamFilter;
-    @Input('showOnLoading') showOnLoading: boolean = false;
+    @Input()
+    filterService: ParamFilter;
+
+    @Input()
+    showOnLoading: boolean = false;
 
     isLoading = true;
 

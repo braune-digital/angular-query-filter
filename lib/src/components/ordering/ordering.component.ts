@@ -11,10 +11,15 @@ import {TranslateService} from '@ngx-translate/core';
 })
 export class OrderingComponent implements OnInit, AfterViewInit {
 
-    @Input('filterService') filterService: ParamFilter;
-    @Input('orderKeys') orderKeys: Array<{ key: string; label: string; }>;
+    @Input()
+    filterService: ParamFilter;
 
-    @Output('reorder') reorder: EventEmitter<boolean> = new EventEmitter();
+    @Input()
+    orderKeys: Array<{ key: string; label: string; }>;
+
+    @Output()
+    reorder: EventEmitter<boolean> = new EventEmitter();
+
 
     form: FormGroup;
 

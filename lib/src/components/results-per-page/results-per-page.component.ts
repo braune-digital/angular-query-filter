@@ -10,10 +10,14 @@ import { ParamFilter } from '../../utils/paramfilter.class';
 })
 export class ResultsPerPageComponent implements OnInit {
 
-    @Input('filterService') filterService: ParamFilter;
-    @Input('resultKeys') resultKeys: Array<number>;
+    @Input()
+    filterService: ParamFilter;
 
-    @Output('refreshedResultsPerPage') refreshedResultsPerPage: EventEmitter<boolean> = new EventEmitter();
+    @Input()
+    resultKeys: Array<number>;
+
+    @Output()
+    refreshedResultsPerPage: EventEmitter<boolean> = new EventEmitter();
 
     form: FormGroup;
 
