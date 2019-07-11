@@ -15,7 +15,6 @@ export class RestoreService {
 
     storeFiltersByName(_filters: Array<Filter>){
         _filters.forEach((_filter) => {
-            console.log(_filter);
             sessionStorage.setItem(this.url + _filter.name, JSON.stringify(_filter));
         });
     }

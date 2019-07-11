@@ -132,12 +132,9 @@ export class ParamFilter<E = Object> {
 
     public build(): any {
 
-        console.log('build');
-
         const searchParams = this.params;
 
         if (this.filters) {
-            console.log(this.filters);
             if (this.filters.length === 1) {
                 const filter = this.filters[0].get();
                 if (filter) {

@@ -114,7 +114,6 @@ export class FilterComponent implements OnInit, AfterViewInit {
         switch (this.type) {
             case 'text':
                 if (filterIsStored) {
-                    console.log('restore text filter');
                     const restoredFilter = this.restoreService.getFilterByName(this.name) as TextFilter;
                     this.model = restoredFilter.text;
                     this.filter = new TextFilter(restoredFilter.properties, this.model, restoredFilter.name);
@@ -125,7 +124,6 @@ export class FilterComponent implements OnInit, AfterViewInit {
 
             case 'select':
                 if (filterIsStored) {
-                    console.log('restore select filter');
                     const restoredFilter = this.restoreService.getFilterByName(this.name) as EqualFilter;
                     this.model = restoredFilter.values;
                     this.filter = new EqualFilter(restoredFilter.property, this.model, restoredFilter.name);
@@ -138,7 +136,6 @@ export class FilterComponent implements OnInit, AfterViewInit {
 
             case 'select_like':
                 if (filterIsStored) {
-                    console.log('restore select_like filter');
                     const restoredFilter = this.restoreService.getFilterByName(this.name) as TextFilter;
                     this.model = restoredFilter.text;
                     this.filter = new TextFilter(restoredFilter.properties, this.model, restoredFilter.name);
@@ -150,7 +147,6 @@ export class FilterComponent implements OnInit, AfterViewInit {
 
             case 'instanceof':
                 if (filterIsStored) {
-                    console.log('restore instanceof filter');
                     const restoredFilter = this.restoreService.getFilterByName(this.name) as InstanceofFilter;
                     this.model = restoredFilter.values;
                     this.filter = new InstanceofFilter(this.model, restoredFilter.name);
@@ -161,7 +157,6 @@ export class FilterComponent implements OnInit, AfterViewInit {
                 break;
             case 'date-time-range':
                 if (filterIsStored) {
-                    console.log('restore time filter');
                     const restoredFilter = this.restoreService.getFilterByName(this.name) as DateTimeRangeFilter;
                     this.model = restoredFilter.unit;
                     this.filter = new DateTimeRangeFilter(
