@@ -10,10 +10,7 @@ import { TextFilter } from '../../utils/filter/types/text.filter';
 import { EqualFilter } from '../../utils/filter/types/equal.filter';
 import {InstanceofFilter} from '../../utils/filter/types/instanceof.filter';
 import {DateTimeRangeFilter} from '../../utils/filter/types/date_time_range.filter';
-import {ParamFilter} from '../../utils/paramfilter.class';
 import {RestoreService} from '../../services/restore.service';
-import {Subscription} from 'rxjs/internal/Subscription';
-import {el} from '@angular/platform-browser/testing/src/browser_util';
 
 @Component({
     selector: 'filter-component',
@@ -99,6 +96,28 @@ export class FilterComponent implements OnInit, AfterViewInit {
                 this.filterPlaceholder = res;
             });
         }
+
+        if (this.type === 'date_time_range') {
+            if (this.restoreService.getFilterByName(this.name)) {
+                const restoredFilter = this.restoreService.getFilterByName(this.name) as DateTimeRangeFilter;
+                this.model = restoredFilter.unit;
+                this.filter = new DateTimeRangeFilter(
+                    restoredFilter.property,
+                    restoredFilter.min,
+                    restoredFilter.max,
+                    this.model,
+                    restoredFilter.name
+                );
+            } else {
+                this.filter = new DateTimeRangeFilter(
+                    this.params.prop,
+                    this.lowerDate,
+                    this.upperDate,
+                    this.model,
+                    this.name
+                );
+            }
+        }
     }
 
     ngAfterViewInit() {
@@ -155,7 +174,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
                 }
 
                 break;
-            case 'date-time-range':
+            case 'date_time_range':
                 if (filterIsStored) {
                     const restoredFilter = this.restoreService.getFilterByName(this.name) as DateTimeRangeFilter;
                     this.model = restoredFilter.unit;
@@ -256,7 +275,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
                 (this.filter as InstanceofFilter).values = this.model;
                 break;
 
-            case 'date-time-range':
+            case 'date_time_range':
                 (this.filter as DateTimeRangeFilter).min = this.lowerDate;
                 (this.filter as DateTimeRangeFilter).max = this.upperDate;
                 (this.filter as DateTimeRangeFilter).unit = this.model;
