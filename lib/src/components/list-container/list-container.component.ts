@@ -39,7 +39,6 @@ export class ListContainerComponent implements OnDestroy, OnInit, AfterViewInit 
     }
 
     ngAfterViewInit(): void {
-
         this.filterComponents.forEach(filter => {
             this.filter.add(filter);
         });

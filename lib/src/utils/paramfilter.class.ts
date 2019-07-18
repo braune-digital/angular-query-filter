@@ -1,12 +1,11 @@
-import {Observable, BehaviorSubject} from 'rxjs';
-import {Filter} from './filter/filter';
-import {Ordering} from './filter/order';
-import {AndFilter} from './filter/types/and.filter';
-import {HttpHeaders, HttpClient} from '@angular/common/http';
+import { Observable, BehaviorSubject } from 'rxjs';
+import { Filter } from './filter/filter';
+import { Ordering } from './filter/order';
+import { AndFilter } from './filter/types/and.filter';
+import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { map, tap } from 'rxjs/operators';
-import {FilterComponent} from '../components/filter/filter.component';
-import {Md5} from 'ts-md5/dist/md5';
-import {RestoreService} from '../services/restore.service';
+import { FilterComponent } from '../components/filter/filter.component';
+import { RestoreService } from '../services/restore.service';
 
 export class ParamFilter<E = Object> {
 
@@ -19,7 +18,7 @@ export class ParamFilter<E = Object> {
     page = 1;
     limitDisplayPages = 3;
 
-    range: { total: number, pages: number, from?: number, to?: number } = {total: 0, pages: 0};
+    range: { total: number, pages: number, from?: number, to?: number } = { total: 0, pages: 0 };
 
     responseEvent: BehaviorSubject<Array<E>> = new BehaviorSubject([]);
     isLoadingEvent: BehaviorSubject<boolean> = new BehaviorSubject(true);
@@ -31,7 +30,6 @@ export class ParamFilter<E = Object> {
     grouped = false;
 
     // Storage
-    storageUrl = window.location.href + '/searchparams';
     filterObjects: Array<object> = [];
     orderingsObjects: { [key: string]: string } = {};
 
@@ -43,26 +41,21 @@ export class ParamFilter<E = Object> {
         private headers: HttpHeaders | { [header: string]: string | string[]; } = {},
         private restoreService: RestoreService = new RestoreService(),
     ) {
-        
-        // Restore pagination from storage
-        if (sessionStorage.getItem(this.storageUrl)) {
-            this.params = JSON.parse(sessionStorage.getItem(this.storageUrl));
-            this.orderingsObjects = JSON.parse(this.params['order']);
 
-            Object.entries(this.orderingsObjects).forEach( ordering => {
-                const tempOrdering: Ordering = new Ordering('', '');
-                tempOrdering.property = ordering[0];
-                tempOrdering.ordering = ordering[1];
-                this.addOrdering(tempOrdering);
-            });
-
-            this.page = parseInt(this.params['page']);
-            this.resultsPerPage = parseInt(this.params['resultsPerPage']);
+        if (this.restoreService.get('resultsPerPage')) {
+            this.resultsPerPage = this.restoreService.get('resultsPerPage');
         }
+        if (this.restoreService.get('orderings')) {
+            this.orderings = this.restoreService.get('orderings');
+        }
+
+        if (this.restoreService.get('page')) {
+            this.page = this.restoreService.get('page');
+        }
+
     }
 
     public refresh(): void {
-
         this.isLoadingEvent.next(true);
         this.refreshPromise()
             .subscribe((response: Array<E>) => {
@@ -81,7 +74,7 @@ export class ParamFilter<E = Object> {
             }
         ).pipe(
             tap(response => this.preparePagination(response)),
-            map( response => response.body)
+            map(response => response.body)
         );
     }
 
@@ -97,15 +90,18 @@ export class ParamFilter<E = Object> {
                     pages: 0
                 };
             } else if (hdr === '*/0') {
-                this.range = {total: 0, pages: 0};
+                this.range = { total: 0, pages: 0 };
             } else {
-                this.range = {total: 0, pages: 0};
+                this.range = { total: 0, pages: 0 };
             }
             this.range['pages'] = Math.ceil((this.range ? this.range.total : response.json().length) / this.resultsPerPage);
         }
     }
 
     public add(filter: FilterComponent | Filter): void {
+        if (!filter) {
+            return;
+        }
         let f: Filter;
         if (filter instanceof Filter) {
             f = filter;
@@ -155,7 +151,6 @@ export class ParamFilter<E = Object> {
         }
 
         const filterObjectsString = JSON.stringify(this.filterObjects);
-
         if (this.filtersFromLastRequest && this.filtersFromLastRequest !== filterObjectsString) {
             this.page = 1;
         }
@@ -169,11 +164,15 @@ export class ParamFilter<E = Object> {
             searchParams['grouped'] = this.grouped.toString();
         }
 
-        // Store filters in sessionStorage
-        this.restoreService.storeFiltersByName(this.filters);
+        // Store in sessionStorage
+        this.filters.forEach((_filter) => {
+            this.restoreService.store(_filter, _filter.name);
+        });
 
-        // Store searchparams to sessionStorage. this is for ordering and resultsPerPage
-        sessionStorage.setItem(this.storageUrl, JSON.stringify(searchParams));
+        this.restoreService.store(this.resultsPerPage.toString(), 'resultsPerPage');
+        this.restoreService.store(this.orderings, 'orderings');
+        this.restoreService.store(this.page, 'page');
+
 
         return searchParams;
     }

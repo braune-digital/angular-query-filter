@@ -3,20 +3,20 @@
  * @copyright 08.05.18 17:25 Braune Digital GmbH
  */
 
-import {AfterViewInit, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Filter } from '../../utils/filter/filter';
 import { TextFilter } from '../../utils/filter/types/text.filter';
 import { EqualFilter } from '../../utils/filter/types/equal.filter';
-import {InstanceofFilter} from '../../utils/filter/types/instanceof.filter';
-import {DateTimeRangeFilter} from '../../utils/filter/types/date_time_range.filter';
-import {RestoreService} from '../../services/restore.service';
+import { InstanceofFilter } from '../../utils/filter/types/instanceof.filter';
+import { DateTimeRangeFilter } from '../../utils/filter/types/date_time_range.filter';
+import { RestoreService } from '../../services/restore.service';
 
 @Component({
     selector: 'filter-component',
     templateUrl: 'filter.component.html'
 })
-export class FilterComponent implements OnInit, AfterViewInit {
+export class FilterComponent implements OnInit {
 
     model: any = null;
     filter: Filter;
@@ -30,14 +30,14 @@ export class FilterComponent implements OnInit, AfterViewInit {
     @Input() set options(options: Array<{ value: any; label: string }>) {
         this._options = options.map(_ => {
             return {
-          value: _.value,
-          label: this.translate.instant(_.label)
-        };
-      });
+                value: _.value,
+                label: this.translate.instant(_.label)
+            };
+        });
     }
 
     @Input()
-    name = '';
+    name = Math.random().toString(36).substr(2, 9);
 
     @Input()
     text: string;
@@ -82,7 +82,8 @@ export class FilterComponent implements OnInit, AfterViewInit {
     constructor(
         private translate: TranslateService,
         private restoreService: RestoreService
-    ) {}
+    ) {
+    }
 
     public getFilter(): Filter {
         return this.filter;
@@ -97,43 +98,12 @@ export class FilterComponent implements OnInit, AfterViewInit {
             });
         }
 
-        if (this.type === 'date_time_range') {
-            if (this.restoreService.getFilterByName(this.name)) {
-                const restoredFilter = this.restoreService.getFilterByName(this.name) as DateTimeRangeFilter;
-                this.model = restoredFilter.unit;
-                this.filter = new DateTimeRangeFilter(
-                    restoredFilter.property,
-                    restoredFilter.min,
-                    restoredFilter.max,
-                    this.model,
-                    restoredFilter.name
-                );
-            } else {
-                this.filter = new DateTimeRangeFilter(
-                    this.params.prop,
-                    this.lowerDate,
-                    this.upperDate,
-                    this.model,
-                    this.name
-                );
-            }
-        }
-    }
-
-    ngAfterViewInit() {
-        let filterIsStored = false;
-
-        if (this.restoreService.getFilterByName(this.name)) {
-            filterIsStored = true;
-        }
-
-        // Check if filters are in sessionStorage. If there is a Filter, the filter will be initialized as new filter with existing values
-        // otherwise a new instance of a filter will be set up
+        const filterStored = this.restoreService.get(this.name);
 
         switch (this.type) {
             case 'text':
-                if (filterIsStored) {
-                    const restoredFilter = this.restoreService.getFilterByName(this.name) as TextFilter;
+                if (filterStored) {
+                    const restoredFilter = filterStored as TextFilter;
                     this.model = restoredFilter.text;
                     this.filter = new TextFilter(restoredFilter.properties, this.model, restoredFilter.name);
                 } else {
@@ -142,8 +112,8 @@ export class FilterComponent implements OnInit, AfterViewInit {
                 break;
 
             case 'select':
-                if (filterIsStored) {
-                    const restoredFilter = this.restoreService.getFilterByName(this.name) as EqualFilter;
+                if (filterStored) {
+                    const restoredFilter = filterStored as EqualFilter;
                     this.model = restoredFilter.values;
                     this.filter = new EqualFilter(restoredFilter.property, this.model, restoredFilter.name);
                     this.filter.active = restoredFilter.active;
@@ -154,8 +124,8 @@ export class FilterComponent implements OnInit, AfterViewInit {
                 break;
 
             case 'select_like':
-                if (filterIsStored) {
-                    const restoredFilter = this.restoreService.getFilterByName(this.name) as TextFilter;
+                if (filterStored) {
+                    const restoredFilter = filterStored as TextFilter;
                     this.model = restoredFilter.text;
                     this.filter = new TextFilter(restoredFilter.properties, this.model, restoredFilter.name);
                 } else {
@@ -165,8 +135,8 @@ export class FilterComponent implements OnInit, AfterViewInit {
                 break;
 
             case 'instanceof':
-                if (filterIsStored) {
-                    const restoredFilter = this.restoreService.getFilterByName(this.name) as InstanceofFilter;
+                if (filterStored) {
+                    const restoredFilter = filterStored as InstanceofFilter;
                     this.model = restoredFilter.values;
                     this.filter = new InstanceofFilter(this.model, restoredFilter.name);
                 } else {
@@ -175,8 +145,8 @@ export class FilterComponent implements OnInit, AfterViewInit {
 
                 break;
             case 'date_time_range':
-                if (filterIsStored) {
-                    const restoredFilter = this.restoreService.getFilterByName(this.name) as DateTimeRangeFilter;
+                if (filterStored) {
+                    const restoredFilter = filterStored as DateTimeRangeFilter;
                     this.model = restoredFilter.unit;
                     this.filter = new DateTimeRangeFilter(
                         restoredFilter.property,
@@ -195,6 +165,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
                     );
                 }
                 break;
+
         }
     }
 
@@ -212,9 +183,9 @@ export class FilterComponent implements OnInit, AfterViewInit {
 
     onChange(data: { value: any, label: string }): void {
         if (data) {
-          this.model = data.value;
+            this.model = data.value;
         } else {
-          this.model = null;
+            this.model = null;
         }
         this.filter.active = this.model !== null;
         this.refreshFilter();
@@ -228,7 +199,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
         ) {
             window.clearTimeout(this.timeoutId);
         }
-        this.timeoutId = window.setTimeout(() => {
+        this.timeoutId = setTimeout(_ => {
             this.refreshFilter();
         }, 500);
     }

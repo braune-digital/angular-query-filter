@@ -41,7 +41,7 @@ export class PaginationFilterComponent implements OnInit {
     pageChanged(page: number): void {
         if (this.filterService.page !== page) {
             this.filterService.page = page;
+            this.filterService.refresh();
         }
-        this.filterService.refresh();
     }
 }

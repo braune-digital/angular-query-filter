@@ -49,9 +49,6 @@ import {RestoreService} from './services/restore.service';
         InfinityListComponent,
         OrderComponent
     ],
-    providers: [
-        RestoreService
-    ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class BdFilterModule {
