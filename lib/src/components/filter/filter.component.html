@@ -13,6 +13,7 @@
 
 <ng-select *ngIf="type === 'select' || type === 'select_like'"
            bdSelect
+           [(ngModel)]="model"
            [placeholder]="filterPlaceholder"
            (change)="onChange($event)"
            (remove)="onRemove()"
@@ -21,7 +22,7 @@
            bindLabel="label"
 ></ng-select>
 
-<ng-container *ngIf="type === 'date-time-range'">
+<ng-container *ngIf="type === 'date_time_range'">
     <bd-daterange  [placeholder]="filterPlaceholder"
                    (datesPicked)="onDatesPicked($event)"
                    [triggers]="datepickerTrigger"

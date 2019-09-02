@@ -10,8 +10,11 @@ import { ParamFilter } from '../../utils/paramfilter.class';
 })
 export class PaginationFilterComponent implements OnInit {
 
-    @Input('filterService') filterService: ParamFilter;
-    @Input('showOnLoading') showOnLoading: boolean = false;
+    @Input()
+    filterService: ParamFilter;
+
+    @Input()
+    showOnLoading: boolean = false;
 
     isLoading = true;
 
@@ -38,7 +41,7 @@ export class PaginationFilterComponent implements OnInit {
     pageChanged(page: number): void {
         if (this.filterService.page !== page) {
             this.filterService.page = page;
+            this.filterService.refresh();
         }
-        this.filterService.refresh();
     }
 }

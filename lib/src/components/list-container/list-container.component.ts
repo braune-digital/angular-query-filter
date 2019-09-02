@@ -6,7 +6,7 @@ import {
     Input,
     OnDestroy,
     OnInit,
-    QueryList
+    QueryList, ViewChild
 } from '@angular/core';
 import {Subscription} from 'rxjs';
 import {ParamFilter} from '../../utils/paramfilter.class';
@@ -18,12 +18,17 @@ import {FilterComponent} from '../filter/filter.component';
     templateUrl: 'list-container.component.html',
     styleUrls: ['./list-container.component.scss']
 })
-export class ListContainerComponent implements OnDestroy, OnInit, AfterContentInit, AfterViewInit {
+export class ListContainerComponent implements OnDestroy, OnInit, AfterViewInit {
 
-    @Input("filter") filter: ParamFilter;
+    @Input()
+    filter: ParamFilter;
+
     isLoadingEventSubscription: Subscription;
+
     public firstLoaded: boolean = false;
-    @ContentChildren(FilterComponent) filterComponents: QueryList<FilterComponent>;
+
+    @ContentChildren(FilterComponent)
+    filterComponents: QueryList<FilterComponent>;
 
     ngOnInit(): void {
         this.isLoadingEventSubscription = this.filter.isLoadingEvent.subscribe(_ => {
@@ -37,12 +42,8 @@ export class ListContainerComponent implements OnDestroy, OnInit, AfterContentIn
         this.filterComponents.forEach(filter => {
             this.filter.add(filter);
         });
+
         this.filter.isReady.next(true);
-    }
-
-
-
-    ngAfterContentInit(): void {
     }
 
     resetFilter(withRefresh: boolean = true): void {

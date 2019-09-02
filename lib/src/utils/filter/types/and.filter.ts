@@ -21,6 +21,9 @@ export class AndFilter extends Filter {
                 filterArray.push(f);
             }
         });
-        return { filter: this.type, filters: filterArray };
+        return {
+            filter: this.type,
+            filters: filterArray
+        };
     }
 }
