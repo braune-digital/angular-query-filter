@@ -6,11 +6,11 @@
     <ng-container *ngIf="firstLoaded">
         <ng-content select="[filter]"></ng-content>
     </ng-container>
-    <ng-container *ngIf="(filter.responseEvent | async) && firstLoaded">
+    <ng-container *ngIf="(filter.responseEvent | async)?.length && firstLoaded">
         <ng-content select="[list]"></ng-content>
         <paginationFilter [showOnLoading]="true" [filterService]="filter"></paginationFilter>
     </ng-container>
-    <ng-container *ngIf="!(filter.responseEvent | async) && firstLoaded">
+    <ng-container *ngIf="!(filter.responseEvent | async)?.length && firstLoaded">
         <ng-content select="[noResults]"></ng-content>
     </ng-container>
 </div>
