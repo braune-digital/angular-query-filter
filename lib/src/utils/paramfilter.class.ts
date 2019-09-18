@@ -29,9 +29,6 @@ export class ParamFilter<E = Object> {
     resultsPerPage = 10;
     grouped = false;
 
-    // Storage
-    filterObjects: Array<object> = [];
-    orderingsObjects: { [key: string]: string } = {};
 
     constructor(
         private _requestUrl: string,
@@ -127,37 +124,38 @@ export class ParamFilter<E = Object> {
     }
 
     public build(): any {
-
+        const filterObjects: Array<object> = [];
         const searchParams = this.params;
 
         if (this.filters) {
             if (this.filters.length === 1) {
                 const filter = this.filters[0].get();
                 if (filter) {
-                    this.filterObjects.push(filter);
+                    filterObjects.push(filter);
                 }
             } else {
                 const andFilter = new AndFilter(this.filters);
-                this.filterObjects[0] = andFilter.get();
+                filterObjects.push(andFilter.get());
             }
         }
 
+        const orderings: { [key: string]: string } = {};
         if (this.orderings) {
             this.orderings.forEach(ordering => {
                 if (ordering.active) {
-                    this.orderingsObjects[ordering.property] = ordering.ordering;
+                    orderings[ordering.property] = ordering.ordering;
                 }
             });
         }
 
-        const filterObjectsString = JSON.stringify(this.filterObjects);
+        const filterObjectsString = JSON.stringify(filterObjects);
         if (this.filtersFromLastRequest && this.filtersFromLastRequest !== filterObjectsString) {
             this.page = 1;
         }
-        this.filtersFromLastRequest = JSON.stringify(this.filterObjects);
+        this.filtersFromLastRequest = JSON.stringify(filterObjects);
 
         searchParams['filter'] = filterObjectsString;
-        searchParams['order'] = JSON.stringify(this.orderingsObjects);
+        searchParams['order'] = JSON.stringify(orderings);
         searchParams['page'] = this.page.toString();
         searchParams['resultsPerPage'] = this.resultsPerPage.toString();
         if (this.grouped) {
