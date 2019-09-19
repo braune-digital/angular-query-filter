@@ -23,6 +23,9 @@ export class ListContainerComponent implements OnDestroy, OnInit, AfterViewInit 
     @Input()
     filter: ParamFilter;
 
+    @Input()
+    hidePagination = false;
+
     isLoadingEventSubscription: Subscription;
 
     public firstLoaded: boolean = false;

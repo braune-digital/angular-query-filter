@@ -8,7 +8,7 @@
     </ng-container>
     <ng-container *ngIf="(filter.responseEvent | async)?.length && firstLoaded">
         <ng-content select="[list]"></ng-content>
-        <paginationFilter [showOnLoading]="true" [filterService]="filter"></paginationFilter>
+        <paginationFilter *ngIf="!hidePagination" [showOnLoading]="true" [filterService]="filter"></paginationFilter>
     </ng-container>
     <ng-container *ngIf="!(filter.responseEvent | async)?.length && firstLoaded">
         <ng-content select="[noResults]"></ng-content>
