@@ -49,6 +49,9 @@ export class FilterComponent implements OnInit {
     selectClass: string;
 
     @Input()
+    selectSearchable = true;
+
+    @Input()
     params: any;
 
     @Input()
