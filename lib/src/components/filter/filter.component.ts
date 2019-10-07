@@ -3,7 +3,7 @@
  * @copyright 08.05.18 17:25 Braune Digital GmbH
  */
 
-import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Filter } from '../../utils/filter/filter';
 import { TextFilter } from '../../utils/filter/types/text.filter';
@@ -18,7 +18,9 @@ import { RestoreService } from '../../services/restore.service';
 })
 export class FilterComponent implements OnInit {
 
+    @Input()
     model: any = null;
+
     filter: Filter;
     timeoutId: any;
     isResetting = false;
