@@ -5,9 +5,10 @@ export class AndFilter extends Filter {
     public type = 'and';
     public filters: Array<Filter>;
 
-    constructor(filters: Array<Filter>) {
+    constructor(filters: Array<Filter>, name?: string) {
         super();
         this.filters = filters;
+        this.name = name;
     }
 
     public get(): object {
@@ -23,7 +24,8 @@ export class AndFilter extends Filter {
         });
         return {
             filter: this.type,
-            filters: filterArray
+            filters: filterArray,
+            name: this.name
         };
     }
 }
