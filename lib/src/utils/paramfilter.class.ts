@@ -205,9 +205,7 @@ export class ParamFilter<E = Object> {
     }
 
     public removeFilter(name: string) {
-        console.log(this.filters);
         this.filters = this.filters.filter(filter => filter.name !== name);
-        console.log(this.filters);
     }
 
     get requestUrl(): string {

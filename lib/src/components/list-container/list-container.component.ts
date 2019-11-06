@@ -28,7 +28,7 @@ export class ListContainerComponent implements OnDestroy, OnInit, AfterViewInit 
 
     isLoadingEventSubscription: Subscription;
 
-    public firstLoaded: boolean = false;
+    public firstLoaded = false;
 
     @ContentChildren(FilterComponent)
     filterComponents: QueryList<FilterComponent>;
