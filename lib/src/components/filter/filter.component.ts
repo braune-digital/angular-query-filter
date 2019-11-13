@@ -244,7 +244,7 @@ export class FilterComponent implements OnInit {
                 break;
 
             case 'select_like':
-                (this.filter as EqualFilter).values = [this.model];
+                (this.filter as TextFilter).text = this.model;
                 break;
 
             case 'instanceof':
