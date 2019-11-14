@@ -12,22 +12,23 @@ export class ParamFilter<E = Object> {
     static resultKeys: number[] = [10, 25, 50];
     public resultKeys = ParamFilter.resultKeys;
 
-    filters: Array<Filter> = [];
-    orderings: Array<Ordering> = [];
+    public filters: Array<Filter> = [];
+    public orderings: Array<Ordering> = [];
 
-    page = 1;
-    limitDisplayPages = 3;
+    public page = 1;
+    public limitDisplayPages = 3;
 
-    range: { total: number, pages: number, from?: number, to?: number } = { total: 0, pages: 0 };
+    public range: { total: number, pages: number, from?: number, to?: number } = { total: 0, pages: 0 };
 
-    responseEvent: BehaviorSubject<Array<E>> = new BehaviorSubject([]);
-    isLoadingEvent: BehaviorSubject<boolean> = new BehaviorSubject(true);
-    isReady: BehaviorSubject<boolean> = new BehaviorSubject(false);
+    public responseEvent: BehaviorSubject<Array<E>> = new BehaviorSubject([]);
+    public isLoadingEvent: BehaviorSubject<boolean> = new BehaviorSubject(true);
+    public isReady: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
-    filtersFromLastRequest: string;
+    public filtersFromLastRequest: string;
 
-    resultsPerPage = 10;
-    grouped = false;
+    public resultsPerPage = 10;
+    public grouped = false;
+    public unique: string;
 
 
     constructor(
@@ -39,15 +40,17 @@ export class ParamFilter<E = Object> {
         private restoreService: RestoreService = new RestoreService(),
     ) {
 
-        if (this.restoreService.get('resultsPerPage')) {
-            this.resultsPerPage = this.restoreService.get('resultsPerPage');
+        this.unique = '_' + Math.random().toString(36).substr(2, 9);
+
+        if (this.restoreService.get('resultsPerPage', this.unique)) {
+            this.resultsPerPage = this.restoreService.get('resultsPerPage', this.unique);
         }
-        if (this.restoreService.get('orderings')) {
-            this.orderings = this.restoreService.get('orderings');
+        if (this.restoreService.get('orderings', this.unique)) {
+            this.orderings = this.restoreService.get('orderings', this.unique);
         }
 
-        if (this.restoreService.get('page')) {
-            this.page = this.restoreService.get('page');
+        if (this.restoreService.get('page', this.unique)) {
+            this.page = this.restoreService.get('page', this.unique);
         }
 
     }
@@ -154,6 +157,7 @@ export class ParamFilter<E = Object> {
         }
         this.filtersFromLastRequest = JSON.stringify(filterObjects);
 
+
         searchParams['filter'] = filterObjectsString;
         searchParams['order'] = JSON.stringify(orderings);
         searchParams['page'] = this.page.toString();
@@ -164,12 +168,12 @@ export class ParamFilter<E = Object> {
 
         // Store in sessionStorage
         this.filters.forEach((_filter) => {
-            this.restoreService.store(_filter, _filter.name);
+            this.restoreService.store(_filter, _filter.name, this.unique);
         });
 
-        this.restoreService.store(this.resultsPerPage.toString(), 'resultsPerPage');
-        this.restoreService.store(this.orderings, 'orderings');
-        this.restoreService.store(this.page, 'page');
+        this.restoreService.store(this.resultsPerPage.toString(), 'resultsPerPage', this.unique);
+        this.restoreService.store(this.orderings, 'orderings', this.unique);
+        this.restoreService.store(this.page, 'page', this.unique);
 
 
         return searchParams;

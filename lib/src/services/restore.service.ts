@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Filter } from '../utils/filter/filter';
 import { Md5 } from 'ts-md5/dist/md5';
 
 @Injectable({
@@ -18,21 +17,21 @@ export class RestoreService {
         }
     }
 
-    store(object: any, key: string): void {
+    store(object: any, key: string, unique: string = ''): void {
         this.updateUrl();
-        const hash: string = (Md5.hashStr(this.url + key) as string);
+        const hash: string = (Md5.hashStr(this.url + key + unique) as string);
         this._cache[hash] = object;
         sessionStorage.setItem(this._identifier, JSON.stringify(this._cache));
     }
 
-    get(key: string): any {
+    get(key: string, unique: string = ''): any {
         this.updateUrl();
-        const hash: string = (Md5.hashStr(this.url + key) as string);
+        const hash: string = (Md5.hashStr(this.url + key + unique) as string);
         this._cache = JSON.parse(sessionStorage.getItem(this._identifier));
         return this._cache.hasOwnProperty(hash) ? this._cache[hash] : null;
     }
 
-    updateUrl(): void{
+    updateUrl(): void {
         this.url = window.location.href;
     }
 

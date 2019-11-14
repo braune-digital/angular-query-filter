@@ -55,9 +55,7 @@ export class BdFilterModule {
     static forRoot(): ModuleWithProviders {
         return {
             ngModule: BdFilterModule,
-            providers: [
-                RestoreService
-            ]
+            providers: []
         };
     }
 }
