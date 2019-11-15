@@ -16,7 +16,7 @@ export class ParamFilter<E = Object> {
     public orderings: Array<Ordering> = [];
 
     public page = 1;
-    public limitDisplayPages = 3;
+    public limitDisplayPages = 5;
 
     public range: { total: number, pages: number, from?: number, to?: number } = { total: 0, pages: 0 };
 
