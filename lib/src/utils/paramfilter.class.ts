@@ -212,6 +212,16 @@ export class ParamFilter<E = Object> {
         this.filters = this.filters.filter(filter => filter.name !== name);
     }
 
+    public setParams(queryParams: { [param: string]: string }) {
+        this.params = queryParams;
+        this.refresh();
+    }
+
+    public removeParams() {
+        this.params = {};
+        this.refresh();
+    }
+
     get requestUrl(): string {
         return this._requestUrl;
     }
