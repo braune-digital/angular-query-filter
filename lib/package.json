@@ -7,11 +7,11 @@
   "license": "GNU",
   "repository": "git@github.com:braune-digital/angular-query-filter.git",
   "peerDependencies": {
-    "@angular/core": ">=5.0.0 <7.2.0",
-    "@angular/common": "^>=5.0.0 <7.2.0",
-    "@angular/forms": ">=5.0.0 <7.2.0",
+    "@angular/core": ">=5.0.0",
+    "@angular/common": "^>=5.0.0",
+    "@angular/forms": ">=5.0.0",
     "ngx-bootstrap": ">=2.0.0",
-    "date-fns": "^1.30.1",
+    "date-fns": ">=1.30",
     "@braune-digital/form-utilities": "^1.0",
     "rxjs": ">=5.5",
     "@ngx-translate/core": ">=9.0.0"
