@@ -95,6 +95,7 @@ export class ParamFilter<E = Object> {
                 this.range = { total: 0, pages: 0 };
             }
             this.range['pages'] = Math.ceil((this.range ? this.range.total : response.json().length) / this.resultsPerPage);
+            this.page = this.range['pages'];
         }
     }
 
