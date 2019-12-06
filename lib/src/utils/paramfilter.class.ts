@@ -28,8 +28,6 @@ export class ParamFilter<E = Object> {
 
     public resultsPerPage = 10;
     public grouped = false;
-    public unique: string;
-
 
     constructor(
         private _requestUrl: string,
@@ -37,20 +35,21 @@ export class ParamFilter<E = Object> {
         private params: Object = {},
         private withScope: boolean = true,
         private headers: HttpHeaders | { [header: string]: string | string[]; } = {},
-        private restoreService: RestoreService = new RestoreService(),
+        // important, do not delete!: init restore Service for static usage
+        private restoreService: RestoreService = new RestoreService()
     ) {
 
-        this.unique = '_' + Math.random().toString(36).substr(2, 9);
+        RestoreService._requestUrl = this._requestUrl;
 
-        if (this.restoreService.get('resultsPerPage', this.unique)) {
-            this.resultsPerPage = this.restoreService.get('resultsPerPage', this.unique);
+        if (RestoreService.get('resultsPerPage')) {
+            this.resultsPerPage = RestoreService.get('resultsPerPage');
         }
-        if (this.restoreService.get('orderings', this.unique)) {
-            this.orderings = this.restoreService.get('orderings', this.unique);
+        if (RestoreService.get('orderings')) {
+            this.orderings = RestoreService.get('orderings');
         }
 
-        if (this.restoreService.get('page', this.unique)) {
-            this.page = this.restoreService.get('page', this.unique);
+        if (RestoreService.get('page')) {
+            this.page = RestoreService.get('page');
         }
 
     }
@@ -172,12 +171,12 @@ export class ParamFilter<E = Object> {
 
         // Store in sessionStorage
         this.filters.forEach((_filter) => {
-            this.restoreService.store(_filter, _filter.name, this.unique);
+            RestoreService.store(_filter, _filter.name);
         });
 
-        this.restoreService.store(this.resultsPerPage.toString(), 'resultsPerPage', this.unique);
-        this.restoreService.store(this.orderings, 'orderings', this.unique);
-        this.restoreService.store(this.page, 'page', this.unique);
+        RestoreService.store(this.resultsPerPage.toString(), 'resultsPerPage');
+        RestoreService.store(this.orderings, 'orderings');
+        RestoreService.store(this.page, 'page');
 
 
         return searchParams;

@@ -85,8 +85,7 @@ export class FilterComponent implements OnInit {
     datepickerTrigger = 'click';
 
     constructor(
-        private translate: TranslateService,
-        private restoreService: RestoreService
+        private translate: TranslateService
     ) {
     }
 
@@ -103,7 +102,7 @@ export class FilterComponent implements OnInit {
             });
         }
 
-        const filterStored = this.restoreService.get(this.name);
+        const filterStored = RestoreService.get(this.name);
 
         switch (this.type) {
             case 'text':
@@ -232,6 +231,13 @@ export class FilterComponent implements OnInit {
     refreshFilter(emitEvent: boolean = true): void {
         if (this.isResetting) {
             return;
+        }
+
+        const filterStored = RestoreService.get(this.name);
+        if (filterStored) {
+            this.filter.name = filterStored.name;
+        } else {
+            this.filter.name = this.filter.name;
         }
 
         switch (this.type) {

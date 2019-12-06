@@ -6,33 +6,33 @@ import { Md5 } from 'ts-md5/dist/md5';
 })
 export class RestoreService {
 
-    url: string = window.location.href;
-    _cache = {};
-    _identifier = '_filterCache';
-
+    public static url: string = window.location.href;
+    public static _cache = {};
+    public static _identifier = '_filterCache';
+    public static _requestUrl = '';
 
     constructor() {
-        if (!sessionStorage.getItem(this._identifier)) {
-            sessionStorage.setItem(this._identifier, JSON.stringify(this._cache));
+        if (!sessionStorage.getItem(RestoreService._identifier)) {
+            sessionStorage.setItem(RestoreService._identifier, JSON.stringify(RestoreService._cache));
         }
     }
 
-    store(object: any, key: string, unique: string = ''): void {
-        this.updateUrl();
-        const hash: string = (Md5.hashStr(this.url + key + unique) as string);
-        this._cache[hash] = object;
-        sessionStorage.setItem(this._identifier, JSON.stringify(this._cache));
+    static store(object: any, key: string): void {
+        RestoreService.updateUrl();
+        const hash: string = (Md5.hashStr(RestoreService.url + '?filter=' + key + '&requestUrl=' + RestoreService._requestUrl) as string);
+        RestoreService._cache[hash] = object;
+        sessionStorage.setItem(RestoreService._identifier, JSON.stringify(RestoreService._cache));
     }
 
-    get(key: string, unique: string = ''): any {
-        this.updateUrl();
-        const hash: string = (Md5.hashStr(this.url + key + unique) as string);
-        this._cache = JSON.parse(sessionStorage.getItem(this._identifier));
-        return this._cache.hasOwnProperty(hash) ? this._cache[hash] : null;
+    static get(key: string): any {
+        RestoreService.updateUrl();
+        const hash: string = (Md5.hashStr(RestoreService.url + '?filter=' + key + '&requestUrl=' + RestoreService._requestUrl) as string);
+        RestoreService._cache = JSON.parse(sessionStorage.getItem(RestoreService._identifier));
+        return RestoreService._cache.hasOwnProperty(hash) ? RestoreService._cache[hash] : null;
     }
 
-    updateUrl(): void {
-        this.url = window.location.href;
+    static updateUrl(): void {
+        RestoreService.url = window.location.href;
     }
 
 }
