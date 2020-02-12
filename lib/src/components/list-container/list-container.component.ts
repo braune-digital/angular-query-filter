@@ -58,7 +58,10 @@ export class ListContainerComponent implements OnDestroy, OnInit, AfterViewInit 
     }
 
     ngOnDestroy(): void {
-        this.isLoadingEventSubscription.unsubscribe();
+
+        if (this.isLoadingEventSubscription) {
+            this.isLoadingEventSubscription.unsubscribe();
+        }
         this.firstLoaded = false;
     }
 
