@@ -14,8 +14,7 @@ export class IsNotNullFilter extends Filter {
         if (this.active) {
             return {
                 filter: this.type,
-                property: this.property,
-                name: this.name
+                property: this.property
             };
         }
         return null;

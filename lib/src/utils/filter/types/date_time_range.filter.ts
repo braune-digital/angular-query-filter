@@ -23,8 +23,7 @@ export class DateTimeRangeFilter extends Filter {
                 filter: this.type,
                 property: this.property,
                 min: this.min,
-                max: this.max,
-                name: this.name
+                max: this.max
             };
         }
         return null;

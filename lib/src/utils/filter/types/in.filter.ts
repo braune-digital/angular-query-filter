@@ -17,8 +17,7 @@ export class InFilter extends Filter {
             return {
                 filter: this.type,
                 property: this.property,
-                values: this.values,
-                name: this.name
+                values: this.values
             };
         }
         return null;

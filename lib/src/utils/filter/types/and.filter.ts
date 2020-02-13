@@ -24,8 +24,7 @@ export class AndFilter extends Filter {
         });
         return {
             filter: this.type,
-            filters: filterArray,
-            name: this.name
+            filters: filterArray
         };
     }
 }

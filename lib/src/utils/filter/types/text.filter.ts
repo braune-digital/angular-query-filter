@@ -17,8 +17,7 @@ export class TextFilter extends Filter {
             return {
                 filter: this.type,
                 properties: this.properties,
-                text: this.text,
-                name: this.name
+                text: this.text
             };
         }
         return null;
