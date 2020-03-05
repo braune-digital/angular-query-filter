@@ -1,4 +1,4 @@
-<div class="row pagination-bar" *ngIf="(showOnLoading || !isLoading) && filterService.range.pages > 1">
+<div class="row pagination-bar" *ngIf="(showOnLoading || !isLoading)">
     <div class="col-md-6 col-sm-12">
         <pagination [totalItems]="filterService.range.total"
                     [itemsPerPage]="filterService.resultsPerPage"
@@ -9,6 +9,7 @@
                     [nextText]="nextText"
                     [firstText]="firstText"
                     [lastText]="lastText"
+                    *ngIf="filterService.range.pages > 1"
         ></pagination>
     </div>
     <div class="col-md-6 col-sm-12">
