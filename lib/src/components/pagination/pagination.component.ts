@@ -3,7 +3,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { ParamFilter } from '../../utils/paramfilter.class';
 
 @Component({
-    moduleId: module.id,
     selector: 'paginationFilter',
     templateUrl: 'pagination.component.html',
     styleUrls: ['./pagination.component.scss']

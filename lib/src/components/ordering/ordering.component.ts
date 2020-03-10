@@ -5,7 +5,6 @@ import { Ordering } from '../../utils/filter/order';
 import {TranslateService} from '@ngx-translate/core';
 
 @Component({
-    moduleId: module.id,
     selector: 'ordering',
     templateUrl: 'ordering.component.html',
 })

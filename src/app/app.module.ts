@@ -7,6 +7,7 @@ import { BdFilterModule } from '../../lib/src/filter.module';
 import { HttpClientModule } from '@angular/common/http';
 import { TranslateModule } from '@ngx-translate/core';
 import { FormUtilitiesModule } from '@braune-digital/form-utilities';
+import { DatepickerModule } from 'ngx-bootstrap';
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import { FormUtilitiesModule } from '@braune-digital/form-utilities';
         HttpClientModule,
         BdFilterModule,
         FormUtilitiesModule.forRoot(),
-        TranslateModule.forRoot()
+        TranslateModule.forRoot(),
+        DatepickerModule.forRoot()
     ],
     providers: [],
     bootstrap: [AppComponent]

@@ -13,7 +13,6 @@ import { ParamFilter } from '../../utils/paramfilter.class';
 import { FilterComponent } from '../filter/filter.component';
 
 @Component({
-    moduleId: module.id,
     selector: 'infinity-list',
     templateUrl: 'infinity-list.component.html',
     styleUrls: ['./infinity-list.component.scss']

@@ -3,7 +3,6 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { ParamFilter } from '../../utils/paramfilter.class';
 
 @Component({
-    moduleId: module.id,
     selector: 'results-per-page',
     templateUrl: 'results-per-page.component.html',
     styleUrls: ['./results-per-page.component.scss']

@@ -14,7 +14,6 @@ import { ListLoadingComponent } from './components/loading/list-loading.componen
 import { ListContainerComponent } from './components/list-container/list-container.component';
 import { OrderComponent } from './components/order/order.component';
 import { InfinityListComponent } from './components/infinity-list/infinity-list.component';
-import {RestoreService} from './services/restore.service';
 
 @NgModule({
     imports: [
@@ -24,7 +23,7 @@ import {RestoreService} from './services/restore.service';
         NgSelectModule,
         FormsModule,
         TranslateModule,
-        DatepickerModule.forRoot(),
+        DatepickerModule,
         NgSelectModule,
         PaginationModule,
         FormUtilitiesModule

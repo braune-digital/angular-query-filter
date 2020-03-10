@@ -13,7 +13,6 @@ import {ParamFilter} from '../../utils/paramfilter.class';
 import {FilterComponent} from '../filter/filter.component';
 
 @Component({
-    moduleId: module.id,
     selector: 'list-container',
     templateUrl: 'list-container.component.html',
     styleUrls: ['./list-container.component.scss']
