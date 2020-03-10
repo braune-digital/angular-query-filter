@@ -52,7 +52,7 @@ import {RestoreService} from './services/restore.service';
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class BdFilterModule {
-    static forRoot(): ModuleWithProviders {
+    static forRoot(): ModuleWithProviders<BdFilterModule> {
         return {
             ngModule: BdFilterModule,
             providers: []
