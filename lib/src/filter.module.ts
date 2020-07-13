@@ -6,7 +6,6 @@ import { PaginationFilterComponent } from './components/pagination/pagination.co
 import { OrderingComponent } from './components/ordering/ordering.component';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { TranslateModule } from '@ngx-translate/core';
-import { DatepickerModule, PaginationModule} from 'ngx-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormUtilitiesModule} from '@braune-digital/form-utilities';
 import { FilterComponent } from './components/filter/filter.component';
@@ -14,6 +13,8 @@ import { ListLoadingComponent } from './components/loading/list-loading.componen
 import { ListContainerComponent } from './components/list-container/list-container.component';
 import { OrderComponent } from './components/order/order.component';
 import { InfinityListComponent } from './components/infinity-list/infinity-list.component';
+import { DatepickerModule } from 'ngx-bootstrap/datepicker';
+import { PaginationModule } from 'ngx-bootstrap/pagination';
 
 @NgModule({
     imports: [

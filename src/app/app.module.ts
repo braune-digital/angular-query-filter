@@ -4,10 +4,11 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { BdFilterModule } from '../../lib/src/filter.module';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule } from "@angular/common/http";
 import { TranslateModule } from '@ngx-translate/core';
 import { FormUtilitiesModule } from '@braune-digital/form-utilities';
-import { DatepickerModule } from 'ngx-bootstrap';
+import { DatepickerModule } from 'ngx-bootstrap/datepicker';
+import { CommonModule } from '@angular/common';
 
 
 @NgModule({
@@ -16,6 +17,7 @@ import { DatepickerModule } from 'ngx-bootstrap';
     ],
     imports: [
         BrowserModule,
+        CommonModule,
         HttpClientModule,
         BdFilterModule,
         FormUtilitiesModule.forRoot(),
