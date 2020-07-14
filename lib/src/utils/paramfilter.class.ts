@@ -24,10 +24,10 @@ export class ParamFilter<E = Object> {
     public isLoadingEvent: BehaviorSubject<boolean> = new BehaviorSubject(true);
     public isReady: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
-    public filtersFromLastRequest: string;
-
     public resultsPerPage = 10;
     public grouped = false;
+
+    filtersFromLastRequest: string;
 
     constructor(
         private _requestUrl: string,
@@ -35,22 +35,9 @@ export class ParamFilter<E = Object> {
         private params: Object = {},
         private withScope: boolean = true,
         private headers: HttpHeaders | { [header: string]: string | string[]; } = {},
-        // important, do not delete!: init restore Service for static usage
-        private restoreService: RestoreService = new RestoreService()
     ) {
 
         RestoreService._requestUrl = this._requestUrl;
-
-        if (RestoreService.get('resultsPerPage')) {
-            this.resultsPerPage = RestoreService.get('resultsPerPage');
-        }
-        if (RestoreService.get('orderings')) {
-            this.orderings = RestoreService.get('orderings');
-        }
-
-        if (RestoreService.get('page')) {
-            this.page = RestoreService.get('page');
-        }
 
     }
 
@@ -64,6 +51,9 @@ export class ParamFilter<E = Object> {
     }
 
     public refreshPromise(): Observable<any> {
+
+
+
         return this.api.get<Array<E>>(
             this.requestUrl,
             {
@@ -78,9 +68,11 @@ export class ParamFilter<E = Object> {
     }
 
     preparePagination(response: any): void {
+        console.log(response.headers);
         if (response.headers.has('Content-Range')) {
             const hdr = response.headers.get('Content-Range');
             const m = hdr && hdr.match(/^(?:items )?(\d+)-(\d+)\/(\d+|\*)$/);
+
             if (m) {
                 this.range = {
                     from: +m[1],
@@ -93,7 +85,10 @@ export class ParamFilter<E = Object> {
             } else {
                 this.range = { total: 0, pages: 0 };
             }
+
             this.range['pages'] = Math.ceil((this.range ? this.range.total : response.json().length) / this.resultsPerPage);
+
+            console.log(this.page);
 
             if (this.page <= 0) {
                 this.page = this.range['pages'];
@@ -130,9 +125,8 @@ export class ParamFilter<E = Object> {
     }
 
     public build(): any {
-        const filterObjects: Array<object> = [];
         const searchParams = this.params;
-
+        const filterObjects: Array<object> = [];
         if (this.filters) {
             if (this.filters.length === 1) {
                 const filter = this.filters[0].get();
@@ -155,11 +149,11 @@ export class ParamFilter<E = Object> {
         }
 
         const filterObjectsString = JSON.stringify(filterObjects);
+
         if (this.filtersFromLastRequest && this.filtersFromLastRequest !== filterObjectsString) {
             this.page = 1;
         }
         this.filtersFromLastRequest = JSON.stringify(filterObjects);
-
 
         searchParams['filter'] = filterObjectsString;
         searchParams['order'] = JSON.stringify(orderings);
@@ -168,15 +162,6 @@ export class ParamFilter<E = Object> {
         if (this.grouped) {
             searchParams['grouped'] = this.grouped.toString();
         }
-
-        // Store in sessionStorage
-        this.filters.forEach((_filter) => {
-            RestoreService.store(_filter, _filter.name);
-        });
-
-        RestoreService.store(this.resultsPerPage.toString(), 'resultsPerPage');
-        RestoreService.store(this.orderings, 'orderings');
-        RestoreService.store(this.page, 'page');
 
 
         return searchParams;
