@@ -105,7 +105,7 @@ export class ParamFilter<E = Object> {
     }
 
     public refreshPromise(): Observable<any> {
-        history.pushState({}, null, '?' + this.buildQueryParameter());
+        history.pushState({}, null, window.location.pathname + '?' + this.buildQueryParameter());
         return this.api.get<Array<E>>(
             this.requestUrl + '?' + this.buildQueryParameter(),
             {
