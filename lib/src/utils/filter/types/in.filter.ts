@@ -6,10 +6,9 @@ export class InFilter extends Filter {
     values: Array<string | number>;
 
     constructor(property: string, values: Array<string | number>, name?: string) {
-        super();
+        super(name);
         this.property = property;
         this.values = values;
-        this.name = name;
     }
 
     public get(): Object {

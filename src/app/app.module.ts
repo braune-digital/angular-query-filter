@@ -9,6 +9,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { FormUtilitiesModule } from '@braune-digital/form-utilities';
 import { DatepickerModule } from 'ngx-bootstrap/datepicker';
 import { CommonModule } from '@angular/common';
+import { PaginationModule } from 'ngx-bootstrap/pagination';
 
 
 @NgModule({
@@ -22,7 +23,8 @@ import { CommonModule } from '@angular/common';
         BdFilterModule,
         FormUtilitiesModule.forRoot(),
         TranslateModule.forRoot(),
-        DatepickerModule.forRoot()
+        DatepickerModule.forRoot(),
+        PaginationModule.forRoot()
     ],
     providers: [],
     bootstrap: [AppComponent]

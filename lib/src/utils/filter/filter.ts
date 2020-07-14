@@ -4,15 +4,20 @@ export abstract class Filter {
     public id: string;
     public type: string;
     public active = true;
-    public name = '';
+    public name = null;
     public refreshEvent = new Subject<boolean>();
 
-    constructor() {
-        this.id =  Math.random().toString(36).substr(2, 9);
+    constructor(name?: string) {
+        this.id = Math.random().toString(36).substr(2, 9);
+        this.name = (name) ?? null;
     }
 
     public toJson() {
-        return { ...this.get(), name: this.name };
+        if (this.name) {
+            return { ...this.get(), name: this.name };
+        } else {
+            return this.get();
+        }
     }
 
     public abstract get(): object;

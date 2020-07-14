@@ -25,7 +25,6 @@ import { PaginationModule } from 'ngx-bootstrap/pagination';
         FormsModule,
         TranslateModule,
         DatepickerModule,
-        NgSelectModule,
         PaginationModule,
         FormUtilitiesModule
     ],

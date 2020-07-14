@@ -6,10 +6,10 @@ export class TextFilter extends Filter {
     public text: string;
 
     constructor(properties: Array<string>, text: string, name?: string) {
-        super();
+        super(name);
         this.properties = properties;
         this.text = text;
-        this.name = name;
+        console.log(this);
     }
 
     public get(): Object {

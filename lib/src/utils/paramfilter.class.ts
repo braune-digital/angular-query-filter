@@ -5,7 +5,14 @@ import { AndFilter } from './filter/types/and.filter';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { map, tap } from 'rxjs/operators';
 import { FilterComponent } from '../components/filter/filter.component';
-import { RestoreService } from '../services/restore.service';
+import * as qs from 'qs';
+import { TextFilter } from './filter/types/text.filter';
+import { DateTimeRangeFilter } from './filter/types/date_time_range.filter';
+import { EqualFilter } from './filter/types/equal.filter';
+import { InFilter } from './filter/types/in.filter';
+import { InstanceofFilter } from './filter/types/instanceof.filter';
+import { IsNotNullFilter } from './filter/types/is-not-null.filter';
+import { IsNullFilter } from './filter/types/is-null.filter';
 
 export class ParamFilter<E = Object> {
 
@@ -27,8 +34,6 @@ export class ParamFilter<E = Object> {
     public resultsPerPage = 10;
     public grouped = false;
 
-    filtersFromLastRequest: string;
-
     constructor(
         private _requestUrl: string,
         private api: HttpClient,
@@ -37,8 +42,54 @@ export class ParamFilter<E = Object> {
         private headers: HttpHeaders | { [header: string]: string | string[]; } = {},
     ) {
 
-        RestoreService._requestUrl = this._requestUrl;
+        const query = Object.assign({}, this.parseQueryParameter(window.location.search));
+        if (query['page']) {
+            this.page = Number(query['page']);
+        }
+        if (query['resultsPerPage']) {
+            this.resultsPerPage = Number(query['resultsPerPage']);
+        }
 
+        if (query['filter']) {
+            this.filters = this.parseFilterFromObject(JSON.parse(query['filter']));
+        }
+
+    }
+
+    public parseFilterFromObject(filters: Array<object>): Array<Filter> {
+        const data = [];
+        filters.forEach(filter => {
+            if (!filter['name']) {
+                return;
+            }
+            switch (filter['filter']) {
+                case 'and':
+                    data.push(new AndFilter((filter['filters']) ? this.parseFilterFromObject(filter['filters']) : [], filter['name']));
+                    break;
+                case 'text':
+                    data.push(new TextFilter(filter['properties'] ?? [], (filter['text']) ?? '', filter['name']));
+                    break;
+                case 'is_null':
+                    data.push(new IsNullFilter(filter['property'] ?? '', filter['name']));
+                    break;
+                case 'is_not_null':
+                    data.push(new IsNotNullFilter(filter['property'] ?? '', filter['name']));
+                    break;
+                case 'instanceof':
+                    data.push(new InstanceofFilter(filter['values'] ?? [], filter['name']));
+                    break;
+                case 'in':
+                    data.push(new InFilter(filter['property'] ?? '', (filter['values']) ?? [], filter['name']));
+                    break;
+                case 'equal':
+                    data.push(new EqualFilter(filter['property'] ?? '', (filter['values']) ?? [], filter['name']));
+                    break;
+                case 'date_time_range':
+                    data.push(new DateTimeRangeFilter(filter['property'] ?? '', (filter['min']) ?? '', (filter['max']) ?? '', (filter['unit']) ?? '', filter['name']));
+                    break;
+            }
+        });
+        return data;
     }
 
     public refresh(): void {
@@ -51,13 +102,10 @@ export class ParamFilter<E = Object> {
     }
 
     public refreshPromise(): Observable<any> {
-
-
-
+        history.pushState({}, null, '?' + this.buildQueryParameter());
         return this.api.get<Array<E>>(
-            this.requestUrl,
+            this.requestUrl + '?' + this.buildQueryParameter(),
             {
-                params: this.build(),
                 observe: 'response',
                 headers: this.headers
             }
@@ -68,7 +116,6 @@ export class ParamFilter<E = Object> {
     }
 
     preparePagination(response: any): void {
-        console.log(response.headers);
         if (response.headers.has('Content-Range')) {
             const hdr = response.headers.get('Content-Range');
             const m = hdr && hdr.match(/^(?:items )?(\d+)-(\d+)\/(\d+|\*)$/);
@@ -88,8 +135,6 @@ export class ParamFilter<E = Object> {
 
             this.range['pages'] = Math.ceil((this.range ? this.range.total : response.json().length) / this.resultsPerPage);
 
-            console.log(this.page);
-
             if (this.page <= 0) {
                 this.page = this.range['pages'];
             }
@@ -107,10 +152,10 @@ export class ParamFilter<E = Object> {
             f = filter.filter;
         }
 
-        if (this.filters.indexOf(f) < 0) {
+        if (this.filters.findIndex(item => item.name === f.name) < 0) {
             this.filters.push(f);
         } else {
-            this.filters[this.filters.findIndex(item => item.id === f.id)] = f;
+            this.filters[this.filters.findIndex(item => item.name === f.name)] = f;
         }
     }
 
@@ -129,13 +174,13 @@ export class ParamFilter<E = Object> {
         const filterObjects: Array<object> = [];
         if (this.filters) {
             if (this.filters.length === 1) {
-                const filter = this.filters[0].get();
+                const filter = this.filters[0].toJson();
                 if (filter) {
                     filterObjects.push(filter);
                 }
             } else {
                 const andFilter = new AndFilter(this.filters);
-                filterObjects.push(andFilter.get());
+                filterObjects.push(andFilter.toJson());
             }
         }
 
@@ -148,14 +193,7 @@ export class ParamFilter<E = Object> {
             });
         }
 
-        const filterObjectsString = JSON.stringify(filterObjects);
-
-        if (this.filtersFromLastRequest && this.filtersFromLastRequest !== filterObjectsString) {
-            this.page = 1;
-        }
-        this.filtersFromLastRequest = JSON.stringify(filterObjects);
-
-        searchParams['filter'] = filterObjectsString;
+        searchParams['filter'] = JSON.stringify(filterObjects);
         searchParams['order'] = JSON.stringify(orderings);
         searchParams['page'] = this.page.toString();
         searchParams['resultsPerPage'] = this.resultsPerPage.toString();
@@ -205,6 +243,18 @@ export class ParamFilter<E = Object> {
         this.refresh();
     }
 
+    public buildQueryParameter(): string {
+        return qs.stringify(this.build());
+
+    }
+
+    public parseQueryParameter(query: string): object {
+        if (!query) {
+            return {};
+        }
+        return qs.parse(query.substring(1));
+    }
+
     public removeParams() {
         this.params = {};
         this.refresh();
@@ -217,4 +267,5 @@ export class ParamFilter<E = Object> {
     set requestUrl(value: string) {
         this._requestUrl = value;
     }
+
 }

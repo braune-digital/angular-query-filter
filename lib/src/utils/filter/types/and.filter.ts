@@ -6,9 +6,8 @@ export class AndFilter extends Filter {
     public filters: Array<Filter>;
 
     constructor(filters: Array<Filter>, name?: string) {
-        super();
+        super(name);
         this.filters = filters;
-        this.name = name;
     }
 
     public get(): object {

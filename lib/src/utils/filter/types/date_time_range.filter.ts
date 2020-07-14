@@ -9,9 +9,8 @@ export class DateTimeRangeFilter extends Filter {
     public property: string;
 
     constructor(property: string, min: Date, max: Date, unit: string, name?: string) {
-        super();
+        super(name);
         this.property = property;
-        this.name = name;
         this.min = min;
         this.max = max;
         this.unit = unit;

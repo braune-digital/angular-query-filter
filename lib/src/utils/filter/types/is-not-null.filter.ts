@@ -5,9 +5,8 @@ export class IsNotNullFilter extends Filter {
     property: string;
 
     constructor(property: string, name?: string) {
-        super();
+        super(name);
         this.property = property;
-        this.name = name;
     }
 
     public get(): Object {

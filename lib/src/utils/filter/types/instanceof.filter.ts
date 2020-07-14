@@ -6,9 +6,8 @@ export class InstanceofFilter extends Filter {
     public values: Array<string>;
 
     constructor(values: Array<string>, name?: string) {
-        super();
+        super(name);
         this.values = values;
-        this.name = name;
     }
 
     public get(): Object {
