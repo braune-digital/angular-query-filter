@@ -42,6 +42,11 @@ export class ParamFilter<E = Object> {
         private headers: HttpHeaders | { [header: string]: string | string[]; } = {},
     ) {
 
+        this.rebuildData();
+
+    }
+
+    public rebuildData(): void {
         const query = Object.assign({}, this.parseQueryParameter(window.location.search));
         if (query['page']) {
             this.page = Number(query['page']);
@@ -49,11 +54,9 @@ export class ParamFilter<E = Object> {
         if (query['resultsPerPage']) {
             this.resultsPerPage = Number(query['resultsPerPage']);
         }
-
         if (query['filter']) {
             this.filters = this.parseFilterFromObject(JSON.parse(query['filter']));
         }
-
     }
 
     public parseFilterFromObject(filters: Array<object>): Array<Filter> {
