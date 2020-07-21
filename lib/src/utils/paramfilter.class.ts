@@ -33,6 +33,7 @@ export class ParamFilter<E = Object> {
 
     public resultsPerPage = 10;
     public grouped = false;
+    public useQueryParameter = false;
 
     constructor(
         private _requestUrl: string,
@@ -41,12 +42,14 @@ export class ParamFilter<E = Object> {
         private withScope: boolean = true,
         private headers: HttpHeaders | { [header: string]: string | string[]; } = {},
     ) {
-
         this.rebuildData();
-
     }
 
     public rebuildData(): void {
+        if (this.useQueryParameter === false) {
+            return;
+        }
+
         const query = Object.assign({}, this.parseQueryParameter(window.location.search));
         if (query['page']) {
             this.page = Number(query['page']);
@@ -105,7 +108,9 @@ export class ParamFilter<E = Object> {
     }
 
     public refreshPromise(): Observable<any> {
-        history.pushState({}, null, window.location.pathname + '?' + this.buildQueryParameter());
+        if (this.useQueryParameter) {
+            history.pushState({}, null, window.location.pathname + '?' + this.buildQueryParameter());
+        }
         return this.api.get<Array<E>>(
             this.requestUrl + '?' + this.buildQueryParameter(),
             {
