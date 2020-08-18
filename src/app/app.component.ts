@@ -2,6 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { ParamFilter } from '../../lib/src/utils/paramfilter.class';
 import { HttpClient } from '@angular/common/http';
 import { TextFilter } from '../../lib/src/utils/filter/types/text.filter';
+import { defineLocale } from 'ngx-bootstrap/chronos';
+import { deLocale } from 'ngx-bootstrap/locale';
+
+defineLocale('de', deLocale);
 
 @Component({
     selector: 'app-root',

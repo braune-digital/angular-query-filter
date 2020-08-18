@@ -2,18 +2,18 @@
     <ng-container *ngIf="firstLoaded">
         <ng-content select="[filter]"></ng-content>
     </ng-container>
-    <ng-container *ngIf="(filter.isLoadingEvent | async) === true">
-        <div #ref><ng-content select="[loading]"></ng-content></div>
-        <list-loading *ngIf="ref.childNodes.length == 0"></list-loading>
-    </ng-container>
-    <ng-container *ngIf="(filter.responseEvent | async)?.length && firstLoaded">
+    <ng-container *ngIf="firstLoaded">
         <ng-content select="[list]"></ng-content>
-        <paginationFilter *ngIf="!hidePagination" [showOnLoading]="true" [filterService]="filter"></paginationFilter>
+        <paginationFilter *ngIf="(filter.responseEvent | async)?.length && !hidePagination" [showOnLoading]="true" [filterService]="filter"></paginationFilter>
     </ng-container>
     <ng-container *ngIf="!(filter.responseEvent | async)?.length && firstLoaded">
         <ng-content select="[noResults]"></ng-content>
     </ng-container>
     <ng-container *ngIf="!(filter.responseEvent | async)?.length && firstLoaded">
         <ng-content select="[ghost]"></ng-content>
+    </ng-container>
+    <ng-container *ngIf="(filter.isLoadingEvent | async) === true">
+        <div #ref><ng-content select="[loading]"></ng-content></div>
+        <list-loading *ngIf="ref.childNodes.length == 0"></list-loading>
     </ng-container>
 </div>

@@ -2,7 +2,7 @@ import { Observable, BehaviorSubject } from 'rxjs';
 import { Filter } from './filter/filter';
 import { Ordering } from './filter/order';
 import { AndFilter } from './filter/types/and.filter';
-import { HttpHeaders, HttpClient } from '@angular/common/http';
+import { HttpHeaders, HttpClient, HttpResponse } from '@angular/common/http';
 import { map, tap } from 'rxjs/operators';
 import { FilterComponent } from '../components/filter/filter.component';
 import * as qs from 'qs';
@@ -34,6 +34,8 @@ export class ParamFilter<E = Object> {
     public resultsPerPage = 10;
     public grouped = false;
     public useQueryParameter = false;
+
+    public apiCallback: () => Observable<HttpResponse<E>>;
 
     constructor(
         private _requestUrl: string,
@@ -111,16 +113,24 @@ export class ParamFilter<E = Object> {
         if (this.useQueryParameter) {
             history.pushState({}, null, window.location.pathname + '?' + this.buildQueryParameter());
         }
-        return this.api.get<Array<E>>(
-            this.requestUrl + '?' + this.buildQueryParameter(),
-            {
-                observe: 'response',
-                headers: this.headers
-            }
-        ).pipe(
-            tap(response => this.preparePagination(response)),
-            map(response => response.body)
-        );
+
+        if (typeof this.apiCallback === 'function') {
+            return this.apiCallback().pipe(
+                tap(response => this.preparePagination(response)),
+                map(response => response.body)
+            );
+        } else {
+            return this.api.get<Array<E>>(
+                this.requestUrl + '?' + this.buildQueryParameter(),
+                {
+                    observe: 'response',
+                    headers: this.headers
+                }
+            ).pipe(
+                tap(response => this.preparePagination(response)),
+                map(response => response.body)
+            );
+        }
     }
 
     preparePagination(response: any): void {
