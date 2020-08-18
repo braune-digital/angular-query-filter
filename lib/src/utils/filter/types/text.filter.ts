@@ -9,7 +9,6 @@ export class TextFilter extends Filter {
         super(name);
         this.properties = properties;
         this.text = text;
-        console.log(this);
     }
 
     public get(): Object {
