@@ -19,12 +19,15 @@ export class DateTimeRangeFilter extends Filter {
 
     public get(): Object {
         if (this.active) {
-            return {
+            const obj =  {
                 filter: this.type,
                 property: this.property,
                 min: this.min,
                 max: this.max
             };
+
+            Object.keys(obj).forEach(key => obj[key] == null && delete obj[key]);
+            return obj;
         }
         return null;
     }
