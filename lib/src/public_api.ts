@@ -19,6 +19,7 @@ export { AndFilter } from './utils/filter/types/and.filter';
 export { DateTimeRangeFilter } from './utils/filter/types/date_time_range.filter';
 export { DateTimeRangeFixedIntervalFilter } from './utils/filter/types/date_time_range_fixes_interval.filter';
 export { InstanceofFilter } from './utils/filter/types/instanceof.filter';
+export { CollectionCountFilter } from './utils/filter/types/collection-count.filter';
 
 // Module
 export * from './filter.module';
