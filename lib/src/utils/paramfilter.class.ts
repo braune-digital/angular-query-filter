@@ -39,17 +39,19 @@ export class ParamFilter<E = Object> {
         private restoreService: RestoreService = new RestoreService()
     ) {
 
-        RestoreService._requestUrl = this._requestUrl;
+        if (this.restoreService) {
+            RestoreService._requestUrl = this._requestUrl;
 
-        if (RestoreService.get('resultsPerPage')) {
-            this.resultsPerPage = RestoreService.get('resultsPerPage');
-        }
-        if (RestoreService.get('orderings')) {
-            this.orderings = RestoreService.get('orderings');
-        }
+            if (RestoreService.get('resultsPerPage')) {
+                this.resultsPerPage = RestoreService.get('resultsPerPage');
+            }
+            if (RestoreService.get('orderings')) {
+                this.orderings = RestoreService.get('orderings');
+            }
 
-        if (RestoreService.get('page')) {
-            this.page = RestoreService.get('page');
+            if (RestoreService.get('page')) {
+                this.page = RestoreService.get('page');
+            }
         }
 
     }
@@ -169,15 +171,16 @@ export class ParamFilter<E = Object> {
             searchParams['grouped'] = this.grouped.toString();
         }
 
-        // Store in sessionStorage
-        this.filters.forEach((_filter) => {
-            RestoreService.store(_filter, _filter.name);
-        });
+        if (this.restoreService) {
+            // Store in sessionStorage
+            this.filters.forEach((_filter) => {
+                RestoreService.store(_filter, _filter.name);
+            });
 
-        RestoreService.store(this.resultsPerPage.toString(), 'resultsPerPage');
-        RestoreService.store(this.orderings, 'orderings');
-        RestoreService.store(this.page, 'page');
-
+            RestoreService.store(this.resultsPerPage.toString(), 'resultsPerPage');
+            RestoreService.store(this.orderings, 'orderings');
+            RestoreService.store(this.page, 'page');
+        }
 
         return searchParams;
     }
@@ -232,4 +235,5 @@ export class ParamFilter<E = Object> {
     set requestUrl(value: string) {
         this._requestUrl = value;
     }
+
 }

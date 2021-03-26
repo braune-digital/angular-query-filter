@@ -49,6 +49,9 @@ export class FilterComponent implements OnInit {
     resetable = true;
 
     @Input()
+    disabled = false;
+
+    @Input()
     selectClass: string;
 
     @Input()
