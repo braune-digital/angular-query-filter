@@ -50,7 +50,7 @@
     "karma-coverage-istanbul-reporter": "^1.2.1",
     "karma-jasmine": "~1.1.0",
     "karma-jasmine-html-reporter": "^0.2.2",
-    "ng-packagr": "^5.0.1",
+    "ng-packagr": "^10.1.1",
     "ng2-ckeditor": "^1.2.2",
     "ngx-quill": "^4.4.2",
     "ngx-textarea-autosize": "^2.0.0",
