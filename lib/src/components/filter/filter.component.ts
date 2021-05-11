@@ -3,19 +3,21 @@
  * @copyright 08.05.18 17:25 Braune Digital GmbH
  */
 
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
-import { Filter } from '../../utils/filter/filter';
-import { TextFilter } from '../../utils/filter/types/text.filter';
-import { EqualFilter } from '../../utils/filter/types/equal.filter';
-import { InstanceofFilter } from '../../utils/filter/types/instanceof.filter';
-import { DateTimeRangeFilter } from '../../utils/filter/types/date_time_range.filter';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Filter} from '../../utils/filter/filter';
+import {TranslateService} from '@ngx-translate/core';
+import {RestoreService} from '../../services/restore.service';
+import {DateTimeRangeFilter} from '../../utils/filter/types/date_time_range.filter';
+import {InstanceofFilter} from '../../utils/filter/types/instanceof.filter';
+import {EqualFilter} from '../../utils/filter/types/equal.filter';
+import {TextFilter} from '../../utils/filter/types/text.filter';
 
 @Component({
     selector: 'filter-component',
     templateUrl: 'filter.component.html'
 })
 export class FilterComponent implements OnInit {
+
 
     @Input()
     model: any = null;
@@ -45,6 +47,9 @@ export class FilterComponent implements OnInit {
 
     @Input()
     resetable = true;
+
+    @Input()
+    disabled = false;
 
     @Input()
     selectClass: string;
@@ -84,52 +89,104 @@ export class FilterComponent implements OnInit {
     datepickerTrigger = 'click';
 
     constructor(
-        private translate: TranslateService
+        protected translate: TranslateService
     ) {
-    }
-
-    public getFilter(): Filter {
+    }public getFilter(): Filter {
         return this.filter;
     }
 
     ngOnInit(): void {
-
-
         if (this.filterPlaceholder) {
             this.translate.get(this.filterPlaceholder).subscribe((res: string) => {
                 this.filterPlaceholder = res;
             });
         }
+        const filterStored = RestoreService.get(this.name);
+        this.initFilters(filterStored);
+    }
 
-
+    initFilters(filterStored): void {
         switch (this.type) {
             case 'text':
-                this.filter = new TextFilter(this.params.properties, this.model, this.name);
+                this.addTextType(filterStored);
                 break;
-
             case 'select':
-                this.filter = new EqualFilter(this.params.prop, this.model, this.name);
-                this.filter.active = false;
+                this.addSelectType(filterStored);
                 break;
-
             case 'select_like':
-                this.filter = new TextFilter(this.params.properties, this.model, this.name);
-                this.filter.active = false;
+                this.addSelectLikeType(filterStored);
                 break;
-
             case 'instanceof':
-                this.filter = new InstanceofFilter(this.model, this.name);
+                this.addInstanceOfType(filterStored);
                 break;
             case 'date_time_range':
-                this.filter = new DateTimeRangeFilter(
-                    this.params.prop,
-                    this.lowerDate,
-                    this.upperDate,
-                    this.model,
-                    this.name
-                );
+                this.addDateTimeRangeType(filterStored);
                 break;
+        }
+    }
 
+    addDateTimeRangeType(filterStored):void {
+        if (filterStored) {
+            const restoredFilter = filterStored as DateTimeRangeFilter;
+            this.model = restoredFilter.unit;
+            this.filter = new DateTimeRangeFilter(
+                restoredFilter.property,
+                restoredFilter.min,
+                restoredFilter.max,
+                this.model,
+                restoredFilter.name
+            );
+        } else {
+            this.filter = new DateTimeRangeFilter(
+                this.params.prop,
+                this.lowerDate,
+                this.upperDate,
+                this.model,
+                this.name
+            );
+        }
+    }
+
+    private addInstanceOfType(filterStored):void {
+        if (filterStored) {
+            const restoredFilter = filterStored as InstanceofFilter;
+            this.model = restoredFilter.values;
+            this.filter = new InstanceofFilter(this.model, restoredFilter.name);
+        } else {
+            this.filter = new InstanceofFilter(this.model, this.name);
+        }
+    }
+
+    private addSelectLikeType(filterStored):void {
+        if (filterStored) {
+            const restoredFilter = filterStored as TextFilter;
+            this.model = restoredFilter.text;
+            this.filter = new TextFilter(restoredFilter.properties, this.model, restoredFilter.name);
+        } else {
+            this.filter = new TextFilter(this.params.properties, this.model, this.name);
+            this.filter.active = false;
+        }
+    }
+
+    private addSelectType(filterStored):void {
+        if (filterStored) {
+            const restoredFilter = filterStored as EqualFilter;
+            this.model = restoredFilter.values;
+            this.filter = new EqualFilter(restoredFilter.property, this.model, restoredFilter.name);
+            this.filter.active = restoredFilter.active;
+        } else {
+            this.filter = new EqualFilter(this.params.prop, this.model, this.name);
+            this.filter.active = false;
+        }
+    }
+
+    private addTextType(filterStored):void {
+        if (filterStored) {
+            const restoredFilter = filterStored as TextFilter;
+            this.model = restoredFilter.text;
+            this.filter = new TextFilter(restoredFilter.properties, this.model, restoredFilter.name);
+        } else {
+            this.filter = new TextFilter(this.params.properties, this.model, this.name);
         }
     }
 
@@ -192,35 +249,62 @@ export class FilterComponent implements OnInit {
         if (this.isResetting) {
             return;
         }
-        this.filter.name = this.filter.name;
 
-        switch (this.type) {
-            case 'text':
-                (this.filter as TextFilter).text = this.model;
-                break;
-
-            case 'select':
-                (this.filter as EqualFilter).values = this.model;
-                break;
-
-            case 'select_like':
-                (this.filter as TextFilter).text = this.model;
-                break;
-
-            case 'instanceof':
-                (this.filter as InstanceofFilter).values = this.model;
-                break;
-
-            case 'date_time_range':
-                (this.filter as DateTimeRangeFilter).min = this.lowerDate;
-                (this.filter as DateTimeRangeFilter).max = this.upperDate;
-                (this.filter as DateTimeRangeFilter).unit = this.model;
-                break;
+        const filterStored = RestoreService.get(this.name);
+        if (filterStored) {
+            this.filter.name = filterStored.name;
+        } else {
+            this.filter.name = this.filter.name;
         }
+
+        this.refreshTypes();
 
         if (emitEvent) {
             this.onRefreshFilter.emit(this.filter);
         }
+    }
+
+    refreshTypes(): void {
+        switch (this.type) {
+            case 'text':
+                this.refreshTextFilter();
+                break;
+            case 'select':
+                this.refreshSelectFilter();
+                break;
+            case 'select_like':
+                this.refreshSelectLikeFilter();
+                break;
+            case 'instanceof':
+                this.refreshInstanceOfFilter();
+                break;
+            case 'date_time_range':
+                this.refreshDateTimeRangeFilter();
+                break;
+        }
+
+    }
+
+    private refreshDateTimeRangeFilter(): void {
+        (this.filter as DateTimeRangeFilter).min = this.lowerDate;
+        (this.filter as DateTimeRangeFilter).max = this.upperDate;
+        (this.filter as DateTimeRangeFilter).unit = this.model;
+    }
+
+    private refreshInstanceOfFilter(): void {
+        (this.filter as InstanceofFilter).values = this.model;
+    }
+
+    private refreshSelectLikeFilter(): void {
+        (this.filter as TextFilter).text = this.model;
+    }
+
+    private refreshTextFilter(): void {
+        (this.filter as TextFilter).text = this.model;
+    }
+
+    private refreshSelectFilter(): void {
+        (this.filter as EqualFilter).values = this.model;
     }
 
     set(value: any, active: boolean = true): void {
@@ -228,4 +312,5 @@ export class FilterComponent implements OnInit {
         this.filter.active = active;
         this.refreshFilter(false);
     }
+
 }
