@@ -1,28 +1,29 @@
 <list-container [filter]="filter">
+  <div filter class="action-bar">
+    <filter-component
+      type="text"
+      [filterPlaceholder]="'bd_audit.admin.list.filter.text.placeholder'"
+      [params]="{ properties: ['message', 'changeset', 'object', 'type'] }"
+      (onRefreshFilter)="filter.refresh()"
+    ></filter-component>
+  </div>
 
-    <div filter class="action-bar">
+  <div loading>Loading</div>
 
-    </div>
+  <div noResults>No Result</div>
 
-    <div loading> Loading</div>
-
-    <div noResults>
-        No Result
-    </div>
-
-    <div list>
-        <table class="table">
-            <thead>
-            <tr>
-                <th></th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr *ngFor="let post of data">
-                <td>{{ post.title }}</td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-
+  <div list>
+    <table class="table">
+      <thead>
+        <tr>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let post of data">
+          <td>{{ post.title }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </list-container>

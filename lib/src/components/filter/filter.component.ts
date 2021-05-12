@@ -86,6 +86,7 @@ export class FilterComponent implements OnInit {
   datepickerTrigger = "click";
 
   constructor(protected translate: TranslateService) {}
+
   public getFilter(): Filter {
     return this.filter;
   }
@@ -97,112 +98,55 @@ export class FilterComponent implements OnInit {
       });
     }
     // const filterStored = RestoreService.get(this.name);
-    // this.initFilters(filterStored);
+    this.initFilters();
   }
 
-  initFilters(filterStored): void {
+  initFilters(): void {
     switch (this.type) {
       case "text":
-        this.addTextType(filterStored);
+        this.addTextType();
         break;
       case "select":
-        this.addSelectType(filterStored);
+        this.addSelectType();
         break;
       case "select_like":
-        this.addSelectLikeType(filterStored);
+        this.addSelectLikeType();
         break;
       case "instanceof":
-        this.addInstanceOfType(filterStored);
+        this.addInstanceOfType();
         break;
       case "date_time_range":
-        this.addDateTimeRangeType(filterStored);
+        this.addDateTimeRangeType();
         break;
     }
   }
 
-  addDateTimeRangeType(filterStored): void {
-    if (filterStored) {
-      const restoredFilter = filterStored as DateTimeRangeFilter;
-      this.model = restoredFilter.unit;
-      this.filter = new DateTimeRangeFilter(
-        restoredFilter.property,
-        restoredFilter.min,
-        restoredFilter.max,
-        this.model,
-        restoredFilter.name
-      );
-    } else {
-      this.filter = new DateTimeRangeFilter(
-        this.params.prop,
-        this.lowerDate,
-        this.upperDate,
-        this.model,
-        this.name
-      );
-    }
+  addDateTimeRangeType(): void {
+    this.filter = new DateTimeRangeFilter(
+      this.params.prop,
+      this.lowerDate,
+      this.upperDate,
+      this.model,
+      this.name
+    );
   }
 
-  private addInstanceOfType(filterStored): void {
-    if (filterStored) {
-      const restoredFilter = filterStored as InstanceofFilter;
-      this.model = restoredFilter.values;
-      this.filter = new InstanceofFilter(this.model, restoredFilter.name);
-    } else {
-      this.filter = new InstanceofFilter(this.model, this.name);
-    }
+  private addInstanceOfType(): void {
+    this.filter = new InstanceofFilter(this.model, this.name);
   }
 
-  private addSelectLikeType(filterStored): void {
-    if (filterStored) {
-      const restoredFilter = filterStored as TextFilter;
-      this.model = restoredFilter.text;
-      this.filter = new TextFilter(
-        restoredFilter.properties,
-        this.model,
-        restoredFilter.name
-      );
-    } else {
-      this.filter = new TextFilter(
-        this.params.properties,
-        this.model,
-        this.name
-      );
-      this.filter.active = false;
-    }
+  private addSelectLikeType(): void {
+    this.filter = new TextFilter(this.params.properties, this.model, this.name);
+    this.filter.active = false;
   }
 
-  private addSelectType(filterStored): void {
-    if (filterStored) {
-      const restoredFilter = filterStored as EqualFilter;
-      this.model = restoredFilter.values;
-      this.filter = new EqualFilter(
-        restoredFilter.property,
-        this.model,
-        restoredFilter.name
-      );
-      this.filter.active = restoredFilter.active;
-    } else {
-      this.filter = new EqualFilter(this.params.prop, this.model, this.name);
-      this.filter.active = false;
-    }
+  private addSelectType(): void {
+    this.filter = new EqualFilter(this.params.prop, this.model, this.name);
+    this.filter.active = false;
   }
 
-  private addTextType(filterStored): void {
-    if (filterStored) {
-      const restoredFilter = filterStored as TextFilter;
-      this.model = restoredFilter.text;
-      this.filter = new TextFilter(
-        restoredFilter.properties,
-        this.model,
-        restoredFilter.name
-      );
-    } else {
-      this.filter = new TextFilter(
-        this.params.properties,
-        this.model,
-        this.name
-      );
-    }
+  private addTextType(): void {
+    this.filter = new TextFilter(this.params.properties, this.model, this.name);
   }
 
   /* Get Dates and set them to current filter*/
