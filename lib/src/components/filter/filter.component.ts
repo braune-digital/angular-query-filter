@@ -179,6 +179,7 @@ export class FilterComponent implements OnInit {
     ) {
       window.clearTimeout(this.timeoutId);
     }
+
     this.timeoutId = setTimeout((_) => {
       this.refreshFilter();
     }, 500);
